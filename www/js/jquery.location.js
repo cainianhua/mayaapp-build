@@ -83,8 +83,6 @@
             that.searchResultContainer = $(".search-results", container);
 
             that.searchTextBox.on("keyup.locationsetter", function(e) { that.onKeyUp(e); });
-
-            that.getSuggestions("广");
         },
         /**
          * [onKeyUp description]

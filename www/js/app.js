@@ -237,7 +237,8 @@ var app = {
 
 		if (!that.checkLocation()) return;
 
-		$.ui.showMask("正在加载...");
+		//$.ui.showMask("正在加载...");
+		el.html("<div>正在加载...</div>");
 		
 		var ajaxSettings = {
 			url: config.serviceUrl + "/services/articles",
@@ -251,7 +252,7 @@ var app = {
 		$.ajax(ajaxSettings).fail(function(jqXHR, textStatus, errorThrown) {			
 			$("#afui").popup("网络不可用，请稍候再试。");
 		}).always(function() {
-			$.ui.hideMask();
+			//$.ui.hideMask();
 		}).done(function(data) {
 			var idStr = el.prop("id");
 			$.ui.updatePanel(idStr, data);

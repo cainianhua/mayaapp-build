@@ -29,30 +29,31 @@
     <script type="text/javascript" charset="utf-8" src="lib/appframework/af.plugins.min.js"></script>-->
     <script type="text/javascript">
     	var config = {
+    	    //serviceUrl: "http://maya.codestudio.com",
     	    serviceUrl: "http://182.92.213.38",
     	};
     	// network disconnection.
     	var onOffline = function () {
             //$("#afui").popup("当前网络不可用");
-            alert("onOffline");
+            ///alert("onOffline");
         }
         // network connnection.
     	var onOnline = function () {
             //$("#afui").popup("网络已连接");
-            alert("onOnline");
+            ///alert("onOnline");
     	}
     	// device APIs are available
 	    var onDeviceReady = function () {
+	    	// Now safe to use device APIs
 	    	document.addEventListener('offline', onOffline, false);
 	    	document.addEventListener('online', onOnline, false);
-	        // Now safe to use device APIs
-	        app.initialize();
 	    }
 
     	jQuery(function ($) {
-    		$.ui.backButtonText = "返回";
     		// Wait for device API libraries to load
     		document.addEventListener("deviceready", onDeviceReady, false);
+    		$.ui.backButtonText = "返回";
+    		app.initialize();
     	});
     </script>
 </head>
