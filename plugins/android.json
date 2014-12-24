@@ -11,6 +11,20 @@
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\" />",
+                            "count": 1
                         }
                     ]
                 }
@@ -19,6 +33,12 @@
     },
     "installed_plugins": {
         "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "com.maya.travelassistant"
+        },
+        "org.apache.cordova.console": {
+            "PACKAGE_NAME": "com.maya.travelassistant"
+        },
+        "org.apache.cordova.network-information": {
             "PACKAGE_NAME": "com.maya.travelassistant"
         }
     },

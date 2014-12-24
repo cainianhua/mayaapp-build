@@ -1,6 +1,5 @@
 F:\Phone\TravelAssistant\platforms\android\ant-build\CordovaApp.ap_ \
  : F:\Phone\TravelAssistant\platforms\android\res\drawable\icon.png \
-F:\Phone\TravelAssistant\platforms\android\res\drawable\splash.png \
 F:\Phone\TravelAssistant\platforms\android\res\drawable-hdpi\icon.png \
 F:\Phone\TravelAssistant\platforms\android\res\drawable-land-hdpi\screen.png \
 F:\Phone\TravelAssistant\platforms\android\res\drawable-land-ldpi\screen.png \
@@ -14,7 +13,6 @@ F:\Phone\TravelAssistant\platforms\android\res\drawable-xxhdpi\icon.png \
 F:\Phone\TravelAssistant\platforms\android\res\values\strings.xml \
 F:\Phone\TravelAssistant\platforms\android\res\xml\config.xml \
 F:\Phone\TravelAssistant\platforms\android\ant-build\res\drawable\icon.png \
-F:\Phone\TravelAssistant\platforms\android\ant-build\res\drawable\splash.png \
 F:\Phone\TravelAssistant\platforms\android\ant-build\res\drawable-hdpi\icon.png \
 F:\Phone\TravelAssistant\platforms\android\ant-build\res\drawable-land-hdpi\screen.png \
 F:\Phone\TravelAssistant\platforms\android\ant-build\res\drawable-land-ldpi\screen.png \
@@ -80,7 +78,11 @@ F:\Phone\TravelAssistant\platforms\android\assets\www\lib\appframework\css\icons
 F:\Phone\TravelAssistant\platforms\android\assets\www\lib\appframework\css\icons.min.css \
 F:\Phone\TravelAssistant\platforms\android\assets\www\lib\appframework\ui\appframework.ui.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\lib\appframework\ui\appframework.ui.min.js \
+F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.network-information \
 F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.splashscreen \
+F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.network-information\www \
+F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.network-information\www\Connection.js \
+F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.network-information\www\network.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.splashscreen\www \
 F:\Phone\TravelAssistant\platforms\android\assets\www\plugins\org.apache.cordova.splashscreen\www\splashscreen.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\res\icon \

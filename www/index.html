@@ -28,31 +28,31 @@
     <!--
     <script type="text/javascript" charset="utf-8" src="lib/appframework/af.plugins.min.js"></script>-->
     <script type="text/javascript">
-    	$.ui.backButtonText = "返回";
     	var config = {
     	    serviceUrl: "http://182.92.213.38",
     	};
-        // deviceready Event Handler
-        //
-        // The scope of 'this' is the event. In order to call the 'receivedEvent'
-        // function, we must explicitly call 'app.receivedEvent(...);'
-    	function onDeviceReady() {
-    	    console.log("deviceready");
-    	    document.addEventListener('offline', this.onOffline, false);
-    	    document.addEventListener('online', this.onOnline, false);
-    	    app.initialize();
-    	}
-    	function onOffline() {
-            $("#afui").popup("当前网络不可用");
+    	// network disconnection.
+    	var onOffline = function () {
+            //$("#afui").popup("当前网络不可用");
+            alert("onOffline");
         }
-    	function onOnline() {
-            $("#afui").popup("网络已连接");
+        // network connnection.
+    	var onOnline = function () {
+            //$("#afui").popup("网络已连接");
+            alert("onOnline");
     	}
+    	// device APIs are available
+	    var onDeviceReady = function () {
+	    	document.addEventListener('offline', onOffline, false);
+	    	document.addEventListener('online', onOnline, false);
+	        // Now safe to use device APIs
+	        app.initialize();
+	    }
 
     	jQuery(function ($) {
-    	    console.log("jquery dom ready");
-    	    //document.addEventListener('deviceready', this.onDeviceReady, false);
-    	    app.initialize();
+    		$.ui.backButtonText = "返回";
+    		// Wait for device API libraries to load
+    		document.addEventListener("deviceready", onDeviceReady, false);
     	});
     </script>
 </head>

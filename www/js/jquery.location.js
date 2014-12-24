@@ -83,6 +83,8 @@
             that.searchResultContainer = $(".search-results", container);
 
             that.searchTextBox.on("keyup.locationsetter", function(e) { that.onKeyUp(e); });
+
+            that.getSuggestions("广");
         },
         /**
          * [onKeyUp description]
@@ -167,7 +169,7 @@
                 that.currentAjaxRequest = $.ajax(ajaxSettings).done(function(ajaxResponse) {
                     that.currentAjaxRequest = null;
 
-                    that.processResponse(ajaxResponse, searchWord);
+                    that.processResponse(ajaxResponse, searchWord, cacheKey);
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
                 });
