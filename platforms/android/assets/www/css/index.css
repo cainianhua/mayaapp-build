@@ -1,6 +1,6 @@
 #afui .header{ /*height: 155px; min-height: 40px;*/}
 #afui .panel{ padding: 0;}
-#afui #backButton{ font-size: 0;}
+/*#afui #backButton{ font-size: 0;}*/
 #afui #backButton::before{ left: -15px;}
 .logo{text-align: center;padding:15px 0; background: #00ABE3;}
 .logo .icon-logo{ background: url(images/logo.png) no-repeat center top; height: 70px;  width: 20%; display: inline-block; background-size: contain;}
@@ -31,7 +31,7 @@
 .headinfo{ color:#929292; padding: 20px 5px; text-align: center;}
 #afui .headinfo p.infotitle{ font-size: 1.4em; padding-bottom: .3em; text-align: left;color: #929292;}
 #afui .headinfo p.infotitle .icon-position{width: 30px; height: 25px; display: inline-block; background: url(images/cityselect.png) no-repeat center center; background-size: 50%; vertical-align: middle;}
-#afui .headinfo p.infocont{ font-size: 1.2em; color: #019BDC;}
+#afui .headinfo p.infocont{ font-size: 1.2em; color: #019BDC;text-align: left;margin-left: 25px;}
 #afui .headinfo p.infocont a{font-size: 2.0em; color: #FE555A; text-decoration: none;}
 #citytoggle{ width: 40px; height: 40px; background: url(images/cityselect.png) no-repeat center center; background-size: 50%;
 position: absolute;
