@@ -20,7 +20,7 @@
     <script type="text/javascript" charset="utf-8" src="lib/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="lib/appframework/jq.appframework.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="lib/appframework/ui/appframework.ui.js"></script>
-    <script type="text/javascript" charset="utf-8" src="js/jquery.location.js"></script>
+    <script type="text/javascript" charset="utf-8" src="js/jquery.location2.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/datepicker.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/date.format.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/ac.js"></script>
@@ -28,31 +28,33 @@
     <!--
     <script type="text/javascript" charset="utf-8" src="lib/appframework/af.plugins.min.js"></script>-->
     <script type="text/javascript">
+    	$.ui.backButtonText = "返回";
     	var config = {
+    	    //serviceUrl: "http://maya.codestudio.com",
     	    serviceUrl: "http://182.92.213.38",
     	};
     	// network disconnection.
     	var onOffline = function () {
             //$("#afui").popup("当前网络不可用");
-            alert("onOffline");
+            ///alert("onOffline");
         }
         // network connnection.
     	var onOnline = function () {
             //$("#afui").popup("网络已连接");
-            alert("onOnline");
+            ///alert("onOnline");
     	}
     	// device APIs are available
 	    var onDeviceReady = function () {
+	    	// Now safe to use device APIs
 	    	document.addEventListener('offline', onOffline, false);
 	    	document.addEventListener('online', onOnline, false);
-	        // Now safe to use device APIs
-	        app.initialize();
 	    }
 
     	jQuery(function ($) {
-    		$.ui.backButtonText = "返回";
     		// Wait for device API libraries to load
     		document.addEventListener("deviceready", onDeviceReady, false);
+    		
+    		app.initialize();
     	});
     </script>
 </head>
@@ -100,9 +102,10 @@
         </section>
 
         <div id="content">
-            <div id="main" data-title="玛雅数码国际" class="panel" selected="true">
-                <div class="logo">
+            <div id="main" data-title="&nbsp;" class="panel" selected="true">
+                <div class="logo" style="background: #00ABE3;">
                     <i class="icon-logo"></i>
+                    <div class="logocity">当前城市：未设置</div>
                 </div>
                 <ul class="navbtn clearfix">
                     <li><a href="#DLDY" data-transition="slide"><i class="icon-navbtn icon-navbtn01"></i><span>电流电压</span></a></li>
@@ -126,11 +129,11 @@
             <div id="HBDH" class="panel" data-title="货币换算" data-nav="toollist" data-load="app.showArticle2"></div>
             <div id="RCRLSJ" data-title="日出日落时间" class="panel" data-nav="toollist">
             	<div class="headinfo"><p class="infotitle"><i class="icon-position"></i>您当前查询的城市</p><p class="infocont"><a href="javascript:$.ui.showModal('#pageCity','slide');">广州市</a> <span>北纬23.567,东经113.456</span></p></div>
-                <div class="sunrise">
-                    <div class="sunrise-result"></div>
+                <div class="sunrise">                    
                     <div class="sunrise-body">
                         <input type="text" id="date-input" readonly="readonly" />
                     </div>
+                    <div class="sunrise-result"></div>
                 </div>
             </div>
             <div id="CPZT" class="panel" data-title="产品专题" data-nav="toollist" data-load="app.showArticle2"></div>

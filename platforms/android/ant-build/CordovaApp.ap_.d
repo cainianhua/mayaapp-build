@@ -54,12 +54,16 @@ F:\Phone\TravelAssistant\platforms\android\assets\www\css\images\icon-navbtn11.p
 F:\Phone\TravelAssistant\platforms\android\assets\www\css\images\logo.png \
 F:\Phone\TravelAssistant\platforms\android\assets\www\css\images\musicalNotes.png \
 F:\Phone\TravelAssistant\platforms\android\assets\www\css\images\units-icons.png \
+F:\Phone\TravelAssistant\platforms\android\assets\www\img\bg-1080.jpg \
+F:\Phone\TravelAssistant\platforms\android\assets\www\img\bg-480.jpg \
+F:\Phone\TravelAssistant\platforms\android\assets\www\img\bg-720.jpg \
 F:\Phone\TravelAssistant\platforms\android\assets\www\img\img.png \
 F:\Phone\TravelAssistant\platforms\android\assets\www\js\ac.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\js\app.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\js\date.format.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\js\datepicker.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\js\jquery.location.js \
+F:\Phone\TravelAssistant\platforms\android\assets\www\js\jquery.location2.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\lib\appframework \
 F:\Phone\TravelAssistant\platforms\android\assets\www\lib\jquery-1.11.1.js \
 F:\Phone\TravelAssistant\platforms\android\assets\www\lib\jquery-1.11.1.min.js \

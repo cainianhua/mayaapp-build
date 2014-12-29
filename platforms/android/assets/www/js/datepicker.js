@@ -96,7 +96,7 @@
           .addClass('datepicker')
           .append($nav)
           .append($calendar)
-          .insertAfter(this.$el);
+          .insertBefore(this.$el);
 
         this.$el.change($.proxy(function() { this.selectDate(); }, this));
 

@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.maya.travelassistant" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>玛雅旅行助手</name>
+    <name>玛雅助手</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        玛雅助手，你的旅行好伴侣
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="maya@01it.com" href="http://www.maya.com.cn">
+        玛雅开发小组
     </author>
     <content src="index.html" />
     <preference name="permissions" value="none" />
@@ -25,7 +25,7 @@
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
     <preference name="SplashScreen" value="screen"/>
-    <preference name="SplashScreenDelay" value="10000" />
+    <preference name="SplashScreenDelay" value="5000" />
     <gap:plugin name="org.apache.cordova.battery-status" />
     <gap:plugin name="org.apache.cordova.camera" />
     <gap:plugin name="org.apache.cordova.media-capture" />
