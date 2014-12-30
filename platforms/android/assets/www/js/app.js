@@ -275,9 +275,21 @@ var app = {
 			return;
 		}
 
+		var showLoading = function() {
+			var htmlContent = '<div class="loading-bd">'
+							+ '    <span class="loading-icon spin"></span>'
+							+ '</div>';
+			$.ui.updatePanel(el.prop("id"), htmlContent);
+		}
+
+		showLoading();
 		//$.ui.showMask("正在加载...");
-		el.html("<div>正在加载...</div>");
+		//el.html('<span class="test">正在加载...</span>');
+		//
+		//$.ui.updatePanel(el.prop("id"), '<div class="test">正在加载...</div>');
 		
+		//return;
+
 		var ajaxSettings = {
 			url: config.serviceUrl + "/services/articles",
 			dataType: "html",
@@ -291,13 +303,17 @@ var app = {
 			$("#afui").popup("网络不可用，请稍候再试。");
 		}).always(function() {
 			//$.ui.hideMask();
-		}).done(function(data) {
-			var idStr = el.prop("id");
-			$.ui.updatePanel(idStr, data);
+		}).done(function(htmlContent) {
+			var idStr = el.prop("id"),
+				htmlLocation = '<div class="headinfo"><p class="infotitle"><i class="icon-position"></i>您当前查询的城市</p><p class="infocont"><a href="javascript:$.ui.showModal(\'#pageCity\',\'slide\');">未知城市</a> <span>未设置经纬度</span></p></div>';
+
 			if (idStr != "SSHL" && idStr != "HBDH") {
-				$('#'+ idStr + '>div').prepend('<div class="headinfo"><p class="infotitle"><i class="icon-position"></i>您当前查询的城市</p><p class="infocont"><a href="javascript:$.ui.showModal(\'#pageCity\',\'slide\');">未知城市</a> <span>未设置经纬度</span></p></div>');
+				htmlContent = htmlLocation + htmlContent;
 			};
+
+			$.ui.updatePanel(idStr, htmlContent);
 			that.showLocation();
+			
 			console.log("article load.");
 		});
 	},
