@@ -1,2 +1,2 @@
-F:\Phone\TravelAssistant\platforms\android\ant-build\AndroidManifest.xml : \
-F:\Phone\TravelAssistant\platforms\android\AndroidManifest.xml \
+F:\Works\MayaApp-Build\platforms\android\ant-build\AndroidManifest.xml : \
+F:\Works\MayaApp-Build\platforms\android\AndroidManifest.xml \
