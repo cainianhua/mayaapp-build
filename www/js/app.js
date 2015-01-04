@@ -283,13 +283,11 @@ var app = {
 		}
 
 		showLoading();
-		//$.ui.showMask("正在加载...");
-		//el.html('<span class="test">正在加载...</span>');
-		//
-		//$.ui.updatePanel(el.prop("id"), '<div class="test">正在加载...</div>');
 		
-		//return;
-
+		var transitionInterval = setInterval(function() {
+			if ($.ui.doingTransition == false) clearInterval(transitionInterval);
+		}, 1000);
+		
 		var ajaxSettings = {
 			url: config.serviceUrl + "/services/articles",
 			dataType: "html",
