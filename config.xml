@@ -21,11 +21,14 @@
     <preference name="detect-data-types" value="true" />
     <preference name="exit-on-suspend" value="false" />
     <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
+    <!--<preference name="auto-hide-splash-screen" value="true" />-->
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
-    <preference name="SplashScreen" value="screen"/>
+    <!--<preference name="SplashScreen" value="screen"/>-->
+	<!-- Do not auto hide splash on iOS -->
+	<preference name="AutoHideSplashScreen" value="false" />
+	<!-- Do not auto hide splash on Android -->
     <preference name="SplashScreenDelay" value="5000" />
 	<preference name="StatusBarOverlaysWebView" value="false" />
 	<!-- ++++++++++++++++++++ PLUGINs ++++++++++++++++++++ -->
