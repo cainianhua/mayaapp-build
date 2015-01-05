@@ -25,11 +25,12 @@
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="7" />
     <preference name="android-installLocation" value="auto" />
-    <!--<preference name="SplashScreen" value="screen"/>-->
 	<!-- Do not auto hide splash on iOS -->
 	<preference name="AutoHideSplashScreen" value="false" />
 	<!-- Do not auto hide splash on Android -->
     <preference name="SplashScreenDelay" value="5000" />
+	<!-- It seems working on Android. -->
+	<preference name="SplashScreen" value="screen"/>
 	<preference name="StatusBarOverlaysWebView" value="false" />
 	<!-- ++++++++++++++++++++ PLUGINs ++++++++++++++++++++ -->
     <gap:plugin name="org.apache.cordova.battery-status" />
@@ -52,15 +53,30 @@
     <gap:plugin name="org.apache.cordova.vibration" />
 	<!-- Fixed a status bar problem on iOS 7 and above. -->
 	<gap:plugin name="com.phonegap.plugin.statusbar" version="1.1.0" />
-	<!-- ++++++++++++++++++++ ICONs ++++++++++++++++++++ -->
+	
     <icon src="icon.png" />
 	<platform name="android">
+		<!-- ++++++++++++++++ ICONs ++++++++++++++++++++ -->
 		<icon src="res/icon/android/icon-36-ldpi.png" density="ldpi" />
 		<icon src="res/icon/android/icon-48-mdpi.png" density="mdpi" />
 		<icon src="res/icon/android/icon-72-hdpi.png" density="hdpi" />
 		<icon src="res/icon/android/icon-96-xhdpi.png" density="xhdpi" />
+		<!-- ++++++++++++++++ SPLASHs ++++++++++++++++++ -->
+		<!-- you can use any density that exists in the Android project -->
+		<splash src="res/screen/android/splash-land-hdpi.png" density="land-hdpi"/>
+		<splash src="res/screen/android/splash-land-ldpi.png" density="land-ldpi"/>
+		<splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>
+		<splash src="res/screen/android/splash-land-xhdpi.png" density="land-xhdpi"/>
+
+		<splash src="res/screen/android/splash-port-hdpi.png" density="port-hdpi"/>
+		<splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>
+		<splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>
+		<splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>
 	</platform>
+	
+	<gap:splash src="splash.png" />
 	<platform name="ios">
+		<!-- ++++++++++++++++ ICONs ++++++++++++++++++++ -->
 		<!-- iOS 8.0+ -->
 		<!-- iPhone 6 Plus  -->
 		<icon src="res/icon/ios/icon-60@3x.png" width="180" height="180" />
@@ -87,21 +103,8 @@
 		<!-- iPad Spotlight and Settings Icon -->
 		<icon src="res/icon/ios/icon-50.png" width="50" height="50" />
 		<icon src="res/icon/ios/icon-50@2x.png" width="100" height="100" />
-	</platform>
-    <!-- ++++++++++++++++++++ SPLASHs ++++++++++++++++++++ -->
-	<platform name="android">
-		<!-- you can use any density that exists in the Android project -->
-		<splash src="res/screen/android/splash-land-hdpi.png" density="land-hdpi"/>
-		<splash src="res/screen/android/splash-land-ldpi.png" density="land-ldpi"/>
-		<splash src="res/screen/android/splash-land-mdpi.png" density="land-mdpi"/>
-		<splash src="res/screen/android/splash-land-xhdpi.png" density="land-xhdpi"/>
-
-		<splash src="res/screen/android/splash-port-hdpi.png" density="port-hdpi"/>
-		<splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>
-		<splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>
-		<splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>
-	</platform>
-	<platform name="ios">
+		
+		<!-- ++++++++++++++++ SPLASHs ++++++++++++++++++ -->
 		<!-- images are determined by width and height. The following are supported -->
 		<splash src="res/screen/ios/Default~iphone.png" width="320" height="480"/>
 		<splash src="res/screen/ios/Default@2x~iphone.png" width="640" height="960"/>
