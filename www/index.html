@@ -36,13 +36,13 @@
     	};
     	// network disconnection.
     	var onOffline = function () {
-            //$("#afui").popup("当前网络不可用");
-            ///alert("onOffline");
+            showNotice("网络不给力");
         }
         // network connnection.
     	var onOnline = function () {
             //$("#afui").popup("网络已连接");
             ///alert("onOnline");
+            showNotice("网络已连接");
     	}
     	// device APIs are available
 	    var onDeviceReady = function () {

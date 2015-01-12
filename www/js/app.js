@@ -82,6 +82,18 @@ function clearCache() {
         },
         cancelOnly: false
     });
+};
+/**
+ * [showNotice description]
+ * @return {[type]}
+ */
+function showNotice(content) {
+	var _notice = $("#afui").notice({ 
+        message: content, 
+        onShow: function() {
+            setTimeout(function() { _notice.hide(); }, 3000);
+        }
+    });
 }
 /**
  * [app description]
@@ -185,7 +197,7 @@ var app = {
 		}
 
 		$.ajax(ajaxSettings).fail(function(jqXHR, textStatus, errorThrown) {			
-			$("#afui").popup({ title: "提示", message: "网络不可用" });
+			showNotice("网络连接不可用");
 		}).always(function() {
 			//$.ui.hideMask();
 		}).done(function(musics) {
@@ -298,7 +310,8 @@ var app = {
 		}
 
 		$.ajax(ajaxSettings).fail(function(jqXHR, textStatus, errorThrown) {			
-			$("#afui").popup("网络不可用，请稍候再试。");
+			showNotice("网络不给力");
+
 		}).always(function() {
 			//$.ui.hideMask();
 		}).done(function(htmlContent) {
