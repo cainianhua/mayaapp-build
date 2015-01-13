@@ -50,7 +50,9 @@ function calc_res() {
         lo = parseFloat(localStorage.Lng),
         la = parseFloat(localStorage.Lat);
 
-    var obj = Cal(mjd(d,m,y,0.0), z, lo, la);
+    var ac = new AstroCalculator();
+
+    var obj = ac.calculate(ac.mjd(d,m,y,0.0), z, lo, la);
     var ret = "";
     if(obj["rise"] == undefined){
         ret = "太阳不升";
