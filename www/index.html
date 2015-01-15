@@ -37,13 +37,13 @@
     	};
     	// network disconnection.
     	var onOffline = function () {
-            showNotice("网络不给力");
+            app.showNotice("网络不给力");
         }
         // network connnection.
     	var onOnline = function () {
             //$("#afui").popup("网络已连接");
             ///alert("onOnline");
-            showNotice("网络已连接");
+            app.showNotice("网络已连接");
     	}
     	// device APIs are available
 	    var onDeviceReady = function () {
@@ -75,7 +75,7 @@
         	<ul class="list">
         		<li class="divider">工具列表</li>
         		<li><a href="#pageCity" data-transition="slide">旅行地点</a></li>
-        		<li><a onclick="clearCache()">清除缓存</a></li>
+        		<li><a onclick="app.clearCache()">清除缓存</a></li>
         	</ul>
         </nav>
 

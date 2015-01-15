@@ -1,4 +1,6 @@
-
+/**
+ * 旅游地点选择插件
+ */
 ;(function ($) {
     var utils = (function () {
             return {

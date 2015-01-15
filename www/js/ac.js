@@ -1,7 +1,7 @@
 /**
  * Author: http://sunrise.supfree.net/sunrise.html
  * Created Date: Tue Jan 13 2015 18:18:08 GMT+0800 (China Standard Time)
- * Description:日出日落时间计算核心方法（可以考虑插件化）
+ * Description:日出日落时间计算核心方法
  */
 function AstroCalculator() {
 	/**

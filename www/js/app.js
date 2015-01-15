@@ -1,113 +1,17 @@
-﻿/**
- * [formatDate description]
- * @param  {[type]} date [description]
- * @return {[type]}      [description]
- */
-function formatDate(date) {
-	date = date || new Date();
-    var y = date.getFullYear(),
-    	m = date.getMonth() + 1,
-    	d = date.getDate();
-
-    return y + "-" + ("0" + m).slice(-2) + "-" + ("0" + d).slice(-2);
-}
+﻿
 /**
- * [isValidDate description]
- * @param  {[type]}  dateStr [description]
- * @return {Boolean}         [description]
- */
-function isValidDate(dateStr) {
-	return (new Date(dateStr).toString() != "Invalid Date");
-}
-/**
- * [checkDateRange description]
- * @param  {[type]} date [description]
- * @return {[type]}      [description]
- */
-function checkDateRange(date) {
-	var _minDate = new Date(2010, 1, 1);
-	var _maxDate = new Date(2030, 12, 31);
-
-	return date <= _maxDate && date >= _minDate;
-}
-/**
- * [calc_res description]
- * @return {[type]} [description]
- */
-function calc_res() {
-	var dateStr = $("#date-input").val();
-
-	// 验证日期格式
-	if (!dateStr || !isValidDate(dateStr)) { return; }
-	// 验证日期范围
-	var date = new Date(dateStr);
-	if (!checkDateRange(date)) { return; }
-    
-    var d = date.getDate(),
-        m = date.getMonth() + 1,
-        y = date.getFullYear(),
-        z = parseInt(localStorage.TimeZone),
-        lo = parseFloat(localStorage.Lng),
-        la = parseFloat(localStorage.Lat);
-
-    var ac = new AstroCalculator();
-
-    var obj = ac.calculate(ac.mjd(d,m,y,0.0), z, lo, la);
-    var ret = "";
-    if(obj["rise"] == undefined){
-        ret = "太阳不升";
-    }
-    else{
-        ret = "日出时间：<span><strong>" + obj["rise"] + "</strong> (当地时间)</span><br />";
-        if(obj["set"] == undefined){
-            ret += "太阳不落";
-        } else {
-            ret += "日落时间：<span class='nr'><strong>" + obj["set"] + "</strong> (当地时间)</span>";
-        }
-    }
-    
-    $(".sunrise-result").html(ret);
-};
-function clearCache() {
-	$("#afui").popup({
-        title: "警告",
-        message: "确定要清楚所有缓存吗？",
-        cancelText: "取消",
-        cancelCallback: function () {
-            console.log("cancelled");
-        },
-        doneText: "确定",
-        doneCallback: function () {
-            console.log("Done for!");
-            app.clearLocation();
-            window.location.reload();
-        },
-        cancelOnly: false
-    });
-};
-/**
- * [showNotice description]
- * @return {[type]}
- */
-function showNotice(content) {
-	var _notice = $("#afui").notice({ 
-        message: content, 
-        onShow: function() {
-            setTimeout(function() { _notice.hide(); }, 3000);
-        }
-    });
-}
-/**
- * [app description]
+ * app类，包含app操作常用的方法集合
  * @type {Object}
  */
 var app = {
 	/**
-	 * [initialize description]
+	 * 应用初始化入口方法
 	 * @return {[type]} [description]
 	 */
 	initialize: function() {
-		var that = this;
+		var that = this,
+			utils = new Utils();
+
 		// 显示地点信息
 	    that.showLocation();
 	    // 初始化地址选择控件
@@ -129,17 +33,21 @@ var app = {
 	        }
 	    });
 	    // 初始化日期日期选择控件
-	    $('#date-input').val(formatDate(new Date())).on("change", function(e){
-	    	calc_res();
+	    $('#date-input').val(utils.formatDate(new Date())).on("change", function(e){
+	    	that.calc_res();
 	    }).datepicker({ 
 	    	monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月" ], 
 	    	shortDayNames: ["日", "一", "二", "三", "四", "五", "六"]
 	    });
 	    // 计算日出日落时间
-	    calc_res();
+	    that.calc_res();
 	    // 播放音乐
 	    that.playAudio();
 	},
+	/**
+	 * 播放音乐
+	 * @return {[type]} [description]
+	 */
 	playAudio: function() {
 		//music
 		//
@@ -199,7 +107,7 @@ var app = {
 		}
 
 		$.ajax(ajaxSettings).fail(function(jqXHR, textStatus, errorThrown) {			
-			showNotice("网络连接不可用");
+			that.showNotice("网络连接不可用");
 		}).always(function() {
 			//$.ui.hideMask();
 		}).done(function(musics) {
@@ -208,7 +116,7 @@ var app = {
 		});
 	},
 	/**
-	 * [checkLocation description]
+	 * 检测用户是否已经选择了地理位置
 	 * @return {[type]} [description]
 	 */
 	checkLocation: function() {
@@ -218,7 +126,7 @@ var app = {
         return true;
 	},
 	/**
-	 * [showLocation description]
+	 * 在页面上显示地理位置信息
 	 * @return {[type]} [description]
 	 */
 	showLocation: function() {
@@ -239,7 +147,7 @@ var app = {
         $(".headinfo p.infocont span").text(that.translateLat(locLat) + "," + that.translateLng(locLng));
 	},
 	/**
-	 * [changeLocation description]
+	 * 修改地理位置信息
 	 * @return {[type]} [description]
 	 */
 	changeLocation: function() {
@@ -248,7 +156,7 @@ var app = {
 	    $.ui.showModal('#pageCity','slide');
 	},
 	/**
-	 * [clearLocation description]
+	 * 清除localStorage的地理位置信息
 	 * @return {[type]} [description]
 	 */
 	clearLocation: function() {
@@ -259,7 +167,7 @@ var app = {
 		localStorage.removeItem("TimeZone");
 	},
 	/**
-	 * [saveLocation description]
+	 * 保存地理位置到localStorage
 	 * @param  {[type]} district [description]
 	 * @return {[type]}          [description]
 	 */
@@ -273,7 +181,7 @@ var app = {
         this.showLocation();
 	},
 	/**
-	 * [showArticle2 description]
+	 * 显示文章内容
 	 * @param  {[type]} panel [description]
 	 * @return {[type]}       [description]
 	 */
@@ -331,7 +239,7 @@ var app = {
 		});
 	},
 	/**
-	 * [translateLng description]
+	 * 转换经度表示方式
 	 * @param  {[type]} lng [description]
 	 * @return {[type]}     [description]
 	 */
@@ -345,7 +253,7 @@ var app = {
         }
 	},
 	/**
-	 * [translateLat description]
+	 * 转化纬度表示方式
 	 * @param  {[type]} lat [description]
 	 * @return {[type]}     [description]
 	 */
@@ -357,5 +265,78 @@ var app = {
         else {
             return "北纬" + lat;
         }
+	},
+	/**
+	 * 清除浏览器localStorage缓存
+	 */
+	clearCache: function() {
+		$("#afui").popup({
+	        title: "警告",
+	        message: "确定要清楚所有缓存吗？",
+	        cancelText: "取消",
+	        cancelCallback: function () {
+	            console.log("cancelled");
+	        },
+	        doneText: "确定",
+	        doneCallback: function () {
+	            console.log("Done for!");
+	            app.clearLocation();
+	            window.location.reload();
+	        },
+	        cancelOnly: false
+	    });
+	},
+	/**
+	 * 显示通知，3秒之后自动隐藏
+	 * @param  {[type]} content [description]
+	 * @return {[type]}         [description]
+	 */
+	showNotice: function(content) {
+		var _notice = $("#afui").notice({ 
+	        message: content, 
+	        onShow: function() {
+	            setTimeout(function() { _notice.hide(); }, 3000);
+	        }
+	    });
+	},
+	/**
+	 * 设置日出日落时间
+	 * @return {[type]} [description]
+	 */
+	calc_res: function() {
+		var utils = new Utils();
+
+		var dateStr = $("#date-input").val();
+
+		// 验证日期格式
+		if (!dateStr || !utils.isValidDate(dateStr)) { return; }
+		// 验证日期范围
+		var date = new Date(dateStr);
+		if (!utils.checkDateRange(date)) { return; }
+	    
+	    var d = date.getDate(),
+	        m = date.getMonth() + 1,
+	        y = date.getFullYear(),
+	        z = parseInt(localStorage.TimeZone),
+	        lo = parseFloat(localStorage.Lng),
+	        la = parseFloat(localStorage.Lat);
+
+	    var ac = new AstroCalculator();
+
+	    var obj = ac.calculate(ac.mjd(d,m,y,0.0), z, lo, la);
+	    var ret = "";
+	    if(obj["rise"] == undefined){
+	        ret = "太阳不升";
+	    }
+	    else{
+	        ret = "日出时间：<span><strong>" + obj["rise"] + "</strong> (当地时间)</span><br />";
+	        if(obj["set"] == undefined){
+	            ret += "太阳不落";
+	        } else {
+	            ret += "日落时间：<span class='nr'><strong>" + obj["set"] + "</strong> (当地时间)</span>";
+	        }
+	    }
+	    
+	    $(".sunrise-result").html(ret);
 	}
 }
