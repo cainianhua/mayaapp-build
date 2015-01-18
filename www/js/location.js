@@ -25,7 +25,7 @@
         var that = this;
             defaults = {
                 serviceUrl: "",         // 数据接口
-                paramName: "s",         // 数据请求的参数名称，在发起请求的时候会把用户输入的搜索关键词作为值传给api
+                paramName: "dn",         // 数据请求的参数名称，在发起请求的时候会把用户输入的搜索关键词作为值传给api
                 reqType: "GET",
                 dataType: "json",       // ajax请求返回的数据格式
                 params: {},             // 请求数据接口需要附带的额外参数
@@ -34,7 +34,7 @@
                     return typeof response === 'string' ? $.parseJSON(response) : response;
                 },
                 formatResult: LocationSetter.formatResult,
-                idField: "id",          // 根据接口返回的结果配置
+                idField: "DistrictId",          // 根据接口返回的结果配置
                 textField: "Name",
                 onSelect: null,
                 minChars: 2,            // 输入多少个字符才能触发ajax搜索数据
@@ -257,10 +257,10 @@
             $.extend(options, suppliedOptions);
         },
         dispose: function () {
-            var that = this;
-            that.el.off('.autocomplete')
-                   .removeData('autocomplete')
-                   .html("");
+            // Refer from: http://api.jquery.com/empty/
+            // To avoid memory leaks, 
+            // jQuery removes other constructs such as data and event handlers from the child elements before removing the elements themselves.
+            this.el.empty().removeData("locationsetter");
         }
     };
 

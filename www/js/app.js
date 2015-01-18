@@ -9,112 +9,40 @@ var app = {
 	 * @return {[type]} [description]
 	 */
 	initialize: function() {
-		var that = this,
-			utils = new Utils();
-
-		// 显示地点信息
-	    that.showLocation();
-	    // 初始化地址选择控件
+		var that = this;
+		// 初始化旅游地点信息
+	    that.initLocation(true);
+	    // 初始化旅游地点选择控件
 	    $("#citybox22 .citybox-bd").locationsetter({
 	        serviceUrl: config.serviceUrl + '/services/locations',
-	        paramName: "dn",
-	        ajaxSettings: { dataType: "jsonp" },
-	        idField: "DistrictId",
-	        onSelect: function (suggestion) {
-	            //af.ui.toggleSideMenu();
-	            //$.ui.loadContent("#main",false,false,"slide");
+	        onSelect: function (district) {
+	            that.saveLocation(district);
 	            $.ui.hideModal();
-	            //alert('You selected: ' + suggestion.Name + ', ' + suggestion.DistrictId);
-	            that.saveLocation(suggestion);
+	            if ($.ui.isSideMenuOn()) $.ui.toggleSideMenu(false);
 
-	            that.showLocation();
-
-	            window.location.reload();
+	            if (config.locations.indexOf(location.hash) > -1) {
+	            	app.showArticle2($(location.hash).get(0));
+	            };
 	        }
 	    });
-	    // 初始化日期日期选择控件
-	    $('#date-input').val(utils.formatDate(new Date())).on("change", function(e){
-	    	that.calc_res();
-	    }).datepicker({ 
-	    	monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月" ], 
-	    	shortDayNames: ["日", "一", "二", "三", "四", "五", "六"]
+	    // 初始化panel的内容为正在加载...
+	    // 说明：日出日落时间不需要从服务器动态加载，其他的工具都需要从服务器动态加载
+	    $.each(["#DLDY", "#CZBZ", "#QQTSYFF", "#SSHL", "#HBDH", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"], function(index, idStr) {
+	    	that.initLoading($(idStr));
 	    });
-	    // 计算日出日落时间
+	    // 初始化日期日期选择控件
+	    $('#date-input').val($.maya.utils.formatDate(new Date()))
+						.on("change", function(e){ that.calc_res(); })
+						.datepicker({ 
+					    	monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月" ], 
+					    	shortDayNames: ["日", "一", "二", "三", "四", "五", "六"]
+					    });
+	    // 初始化日出日落时间
 	    that.calc_res();
-	    // 播放音乐
-	    that.playAudio();
+	    // 初始化音乐播放控件
+	    $(".music-area").musicplayer({ did: localStorage.Id, serviceUrl: config.serviceUrl + "/services/musics" });
 	},
-	/**
-	 * 播放音乐
-	 * @return {[type]} [description]
-	 */
-	playAudio: function() {
-		//music
-		//
-		var that = this;
 
-		if (!that.checkLocation()) return;
-		//
-
-		var initAudio = function(musics) {
-			if (musics.length <= 0) return;
-			var i = 0;
-			var endIndex = musics.length;
-			var audioHost = $("#audio_host");
-			var au = $('.audio_btn');
-
-			console.log("music index is:" + i);
-
-	        audioHost.attr('src', musics[0].LinkTo);
-	        //audioHost.attr('loop', true);
-	        audioHost.attr('autoplay', false);
-	        audioHost.on("ended", function() {
-	        	i++;
-	        	console.log("music index is:" + i);
-	        	if (i > endIndex - 1) {
-	        		// 从头开始
-	        		i  = 0;
-	        		audioHost.attr('src', musics[i].LinkTo);
-	        		au.toggleClass('z-play');
-	        		audioHost.get(0).pause();
-	        		return false;
-	        	}
-	        	audioHost.attr('src', musics[i].LinkTo);
-	        	au.addClass('z-play');
-	        	audioHost.get(0).play();
-	        });
-	        // 播放状态
-	        au.addClass('z-play');
-	        audioHost.get(0).play();
-
-	        au.on('click', function() {
-	            if ($(this).data('status') === 'off') {
-	                $(this).data('status', 'on');
-	                audioHost.get(0).play();
-	            } else {
-	                $(this).data('status', 'off');
-	                audioHost.get(0).pause();
-	            }
-	            au.toggleClass('z-play');
-	        });
-		};
-
-		// ajax music data.
-		var ajaxSettings = {
-			url: config.serviceUrl + "/services/musics",
-			dataType: "json",
-			data: { did: localStorage.Id }
-		}
-
-		$.ajax(ajaxSettings).fail(function(jqXHR, textStatus, errorThrown) {			
-			that.showNotice("网络连接不可用");
-		}).always(function() {
-			//$.ui.hideMask();
-		}).done(function(musics) {
-			console.log("music's count: " + musics.length);
-			initAudio(musics);
-		});
-	},
 	/**
 	 * 检测用户是否已经选择了地理位置
 	 * @return {[type]} [description]
@@ -127,32 +55,33 @@ var app = {
 	},
 	/**
 	 * 在页面上显示地理位置信息
-	 * @return {[type]} [description]
+	 * @param  {[type]} force 如果未选择地点，是否弹出地点选择器
+	 * @return {[type]}       [description]
 	 */
-	showLocation: function() {
+	initLocation: function(force) {
 		var that = this;
 
-		if (!that.checkLocation()) { 
-			that.changeLocation();
-			return; 
-		};
-
-		var locName = localStorage.Name;
+		var locName = localStorage.Name || "未设置";
         var locLng = localStorage.Lng;
         var locLat = localStorage.Lat;
 
+        // 文章页顶部显示地点信息
         $(".headinfo p.infocont a").text(locName);
-        $("#citybox22 .citybox-hd span").text(locName);
-        $("#main .logocity").text("当前城市：" + locName);
         $(".headinfo p.infocont span").text(that.translateLat(locLat) + "," + that.translateLng(locLng));
+        // 设置旅游城市页面显示地点信息
+        $("#citybox22 .citybox-hd span").text(locName);
+        // 首页顶部显示地点信息
+        $("#main .logocity").text("旅行目的地：" + locName);
+
+        if (!that.checkLocation() && force) { 
+			that.changeLocation();
+		};
 	},
 	/**
 	 * 修改地理位置信息
 	 * @return {[type]} [description]
 	 */
 	changeLocation: function() {
-		//af.ui.toggleSideMenu();
-	    //$.ui.loadContent("#main",false,false,"slide");
 	    $.ui.showModal('#pageCity','slide');
 	},
 	/**
@@ -165,6 +94,8 @@ var app = {
 		localStorage.removeItem("Lng");
 		localStorage.removeItem("Lat");
 		localStorage.removeItem("TimeZone");
+
+		this.initLocation();
 	},
 	/**
 	 * 保存地理位置到localStorage
@@ -178,17 +109,16 @@ var app = {
         localStorage.Lat = district.Lat;
         localStorage.TimeZone = district.TimeZone || 8;
 
-        this.showLocation();
+        this.initLocation();
 	},
 	/**
 	 * 显示文章内容
-	 * @param  {[type]} panel [description]
+	 * @param  {[type]} panel 当前的panel的dom对象
 	 * @return {[type]}       [description]
 	 */
-	showArticle2: function (panel) {
-	    //$.ui.showMask("测试...");
+	showArticle2: function(panel) {
+	    console.log("Call showArticle2");
 
-		//debugger;
 		var el = $(panel);
 		var that = this;
 
@@ -196,47 +126,64 @@ var app = {
 			that.changeLocation();
 			return;
 		}
-
-		var showLoading = function() {
-			var htmlContent = '<div class="loading-bd">'
-							+ '    <span class="loading-icon spin"></span>'
-							+ '</div>';
-			$.ui.updatePanel(el.prop("id"), htmlContent);
-		}
-
-		showLoading();
 		
-		var transitionInterval = setInterval(function() {
-			if ($.ui.doingTransition == false) clearInterval(transitionInterval);
-		}, 1000);
-		
-		var ajaxSettings = {
-			url: config.serviceUrl + "/services/articles",
-			dataType: "html",
-			data: {
-				type: el.prop("id").toUpperCase(),
-				did: localStorage.Id
+		console.log("doingTransition: " + $.ui.doingTransition);
+
+		// afui动画完成之后执行回调方法
+		// 这样可以避免页面多个效果重叠导致卡顿的问题
+		$.maya.utils.afterAfuiTransitionCompleted(function() {
+			var ajaxSettings = {
+				url: config.serviceUrl + "/services/articles",
+				dataType: "html",
+				data: {
+					type: el.prop("id").toUpperCase(),
+					did: localStorage.Id
+				}
 			}
-		}
 
-		$.ajax(ajaxSettings).fail(function(jqXHR, textStatus, errorThrown) {			
-			showNotice("网络不给力");
+			if (that.currAjaxRequest) {
+				that.currAjaxRequest.abort();
+			}
 
-		}).always(function() {
-			//$.ui.hideMask();
-		}).done(function(htmlContent) {
-			var idStr = el.prop("id"),
-				htmlLocation = '<div class="headinfo"><p class="infotitle"><i class="icon-position"></i>您当前查询的城市</p><p class="infocont"><a href="javascript:$.ui.showModal(\'#pageCity\',\'slide\');">未知城市</a> <span>未设置经纬度</span></p></div>';
+			that.currAjaxRequest = $.ajax(ajaxSettings).done(function(htmlContent) {
+				var idStr = el.prop("id"),
+					htmlLocation = '<div class="headinfo"><p class="infotitle"><i class="icon-position"></i>您当前查询的城市</p><p class="infocont"><a href="javascript:$.ui.showModal(\'#pageCity\',\'slide\');">未知城市</a> <span>未设置经纬度</span></p></div>';
 
-			if (idStr != "SSHL" && idStr != "HBDH") {
-				htmlContent = htmlLocation + htmlContent;
-			};
+				if (idStr != "SSHL" && idStr != "HBDH") {
+					htmlContent = htmlLocation + htmlContent;
+				};
 
-			$.ui.updatePanel(idStr, htmlContent);
-			that.showLocation();
-			
-			console.log("article load.");
+				$.ui.updatePanel(idStr, htmlContent);
+				that.initLocation();
+				
+				console.log("Loaded article.");
+			}).fail(function(jqXHR, textStatus, errorThrown) {			
+				$.maya.utils.showNotice("网络不给力");
+			}).always(function() {
+				that.currAjaxRequest = null;
+			});
 		});
+	},
+	/**
+	 * 清空文章数据
+	 * @param  {[type]} panel 当前的panel的dom对象
+	 * @return {[type]}       [description]
+	 */
+	clearArticle: function(panel) {
+		console.log("Call clearArticle");
+
+		this.initLoading(panel);
+	},
+	/**
+	 * 显示正在加载信息
+	 * @param  {[type]} panel [description]
+	 * @return {[type]}       [description]
+	 */
+	initLoading: function(panel) {
+		var htmlContent = '<div class="loading-bd">'
+						+ '    <span class="loading-icon spin"></span>'
+						+ '</div>';
+		$.ui.updatePanel($(panel).prop("id"), htmlContent);
 	},
 	/**
 	 * 转换经度表示方式
@@ -270,8 +217,8 @@ var app = {
 	 * 清除浏览器localStorage缓存
 	 */
 	clearCache: function() {
-		$("#afui").popup({
-	        title: "警告",
+		$.ui.popup({
+	        title: "提醒",
 	        message: "确定要清楚所有缓存吗？",
 	        cancelText: "取消",
 	        cancelCallback: function () {
@@ -280,23 +227,11 @@ var app = {
 	        doneText: "确定",
 	        doneCallback: function () {
 	            console.log("Done for!");
+	            $.ui.toggleSideMenu();
 	            app.clearLocation();
-	            window.location.reload();
+	            app.changeLocation();
 	        },
 	        cancelOnly: false
-	    });
-	},
-	/**
-	 * 显示通知，3秒之后自动隐藏
-	 * @param  {[type]} content [description]
-	 * @return {[type]}         [description]
-	 */
-	showNotice: function(content) {
-		var _notice = $("#afui").notice({ 
-	        message: content, 
-	        onShow: function() {
-	            setTimeout(function() { _notice.hide(); }, 3000);
-	        }
 	    });
 	},
 	/**
@@ -304,15 +239,13 @@ var app = {
 	 * @return {[type]} [description]
 	 */
 	calc_res: function() {
-		var utils = new Utils();
-
 		var dateStr = $("#date-input").val();
 
 		// 验证日期格式
-		if (!dateStr || !utils.isValidDate(dateStr)) { return; }
+		if (!dateStr || !$.maya.utils.isValidDate(dateStr)) { return; }
 		// 验证日期范围
 		var date = new Date(dateStr);
-		if (!utils.checkDateRange(date)) { return; }
+		if (!$.maya.utils.checkDateRange(date)) { return; }
 	    
 	    var d = date.getDate(),
 	        m = date.getMonth() + 1,

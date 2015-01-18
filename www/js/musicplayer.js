@@ -38,7 +38,7 @@
                 if (instance && instance.dispose) {
                     instance.dispose();
                 }
-                instance = new LocationSetter(this, options);
+                instance = new MusicPlayer(this, options);
                 $self.data(dataKey, instance);
             }
         });
@@ -47,21 +47,25 @@
     function MusicPlayer(el, options) {
         var that = this,
             defaults = {
-                _api: config.serviceUrl + "/services/musics",
-                did: false // 地点的编号，用于查询对应地点的音乐设置
+                serviceUrl: "", // 音乐数据接口
+                did: false,     // 地点的编号，用于查询对应地点的音乐设置，必须
+                onPlay: null,   // 播放事件处理方法（未实现）
+                onPause: null   // 暂停事件处理方法（未实现）
             };
 
         // Shared variables;
-        that.element = el; // 当前元素dom对象
-        that.el = $(el); // 当前元素jQuery对象
+        that.element = el;  // 当前元素dom对象
+        that.el = $(el);    // 当前元素jQuery对象
         that.options = $.extend({}, defaults, options);
-        that.isPlaying = false; // 播放状态
+        that.isPlaying = false; // 播放器状态，只有在用户点击播放或者暂停的时候改变状态
         that.currAjaxRequest = null; // 异步请求对象
         that.audioElement = null; // html5 audio控件
         that.controlButton = null; // 点击可以控制播放或者暂停
 
         that.musics = []; // 播放音乐列表
         that.currMusicIndex = 0;
+
+        that.initialize();
     }
 
     MusicPlayer.prototype = {
@@ -80,8 +84,8 @@
                          + '<audio id="audio_host" data-src=""></audio>');
 
             that.audioElement = $("#audio_host", container);
-            that.controllButton = $('.audio_btn', container);
-            that.controllButton.on('click', function() {
+            that.controlButton = $('.audio_btn', container);
+            that.controlButton.on('click.musicplayer', function() {
                 if (that.isPlaying) {
                     that.pause();
                 } else {
@@ -97,7 +101,7 @@
 
             that.getMusics(districtId, function(error, musics) {
                 if (error) {
-                    that._showNotice(error.message);
+                    $.maya.utils.showNotice(error.message);
                     return;
                 };
 
@@ -119,7 +123,7 @@
                 options = that.options;
             // ajax music data.
             var ajaxSettings = {
-                url: options._api,
+                url: options.serviceUrl,
                 dataType: "json",
                 data: {
                     did: districtId
@@ -135,7 +139,6 @@
                 that.musics = musics;
                 callback(null, musics);
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                //that._showNotice("网络连接不可用");
                 callback({
                     code: -1,
                     message: "网络连接不可用"
@@ -150,6 +153,8 @@
          * @return {[type]}           [description]
          */
         switchTo: function(currIndex) {
+            console.log("music play index: " + currIndex);
+
             var that = this,
                 musics = that.musics;
 
@@ -159,6 +164,7 @@
             if (currIndex < 0 || currIndex > endIndex) {
                 // 重置播放列表，处于暂停状态
                 that.reset();
+                return;
             }
 
             that.currMusicIndex = currIndex;
@@ -174,8 +180,6 @@
         play: function() {
             var that = this;
 
-            if (that.isPlaying) return;
-
             that.audioElement.get(0).play();
             that.controlButton.addClass("z-play");
 
@@ -188,23 +192,25 @@
         pause: function() {
             var that = this;
 
-            if (that.isPlaying) {
-                that.audioElement.get(0).pause();
-                that.controlButton.removeClass("z-play");
+            that.audioElement.get(0).pause();
+            that.controlButton.removeClass("z-play");
 
-                that.isPlaying = false;
-            }
+            that.isPlaying = false;
         },
         /**
          * 重置播放器
          * @return {[type]} [description]
          */
         reset: function() {
-            var that = this;
+            var that = this,
+                musicLink = "";
 
             that.currMusicIndex = 0;
 
-            that.audioElement.attr('src', that.musics[that.currMusicIndex].LinkTo);
+            if (that.musics.length > 0) {
+                musicLink = that.musics[that.currMusicIndex].LinkTo;
+            };
+            that.audioElement.attr('src', musicLink);
             that.pause();
         },
         /**
@@ -212,22 +218,10 @@
          * @return {[type]} [description]
          */
         dispose: function() {
-
-        },
-        /**
-         * 显示通知
-         * @param  {[type]} content [description]
-         * @return {[type]}         [description]
-         */
-        _showNotice: function(content) {
-            var _notice = $("#afui").notice({
-                message: content,
-                onShow: function() {
-                    setTimeout(function() {
-                        _notice.hide();
-                    }, 3000);
-                }
-            });
+            // Refer from: http://api.jquery.com/empty/
+            // To avoid memory leaks, 
+            // jQuery removes other constructs such as data and event handlers from the child elements before removing the elements themselves.
+            this.el.empty().removeData("musicplayer");
         }
     };
 })(jQuery);
