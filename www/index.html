@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>玛雅数码应用</title>
+    <title>玛雅数码应用</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <meta content="yes" name="apple-mobile-web-app-capable">
@@ -31,55 +31,32 @@
     <script type="text/javascript" charset="utf-8" src="lib/appframework/af.plugins.min.js"></script>-->
     <script type="text/javascript">
     	var config = {
-            //serviceUrl: "http://182.92.213.38"
-            //serviceUrl: "http://www.talkasp.net"
-            serviceUrl: "http://maya.codestudio.com",
-            locations: ["#DLDY", "#CZBZ", "#QQTSYFF", "#SSHL", "#HBDH", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"]
+            serviceUrl: "http://api.mayacn.net",
+            // "日出日落查询"内容不需要
+            toolHashs: ["#DLDY", "#CZBZ", "#QQTSYFF", "#SSHL", "#HBDH", "#RCRLSJ", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"],
         };
-        $.ui.backButtonText = "返回";
-        /**
-         * 自定义a标签处理方法
-         * @param  {[type]} target [description]
-         * @param  {[type]} e      [description]
-         * @return {[type]}        [description]
-         */
-        $.ui.customClickHandler = function(target, e) {
-            //console.log(arguments);
 
-            var href = target.hash.length > 0 ? target.hash : target.href;
-            if (config.locations.indexOf(href) > -1) {
-                if (!app.checkLocation()) {
-                    app.changeLocation();
-                }
-                else {
-                    $.ui.loadDiv(href, false, false, "slide");
-                }
-                return true; // 返回true告诉afui，我们自己已经处理了这个a的点击事件
+        jQuery(function ($) {
+            $.ui.backButtonText = "返回";
+            /**
+             * 自定义a标签处理方法
+             * @param  {[type]} target [description]
+             * @param  {[type]} e      [description]
+             * @return {[type]}        [description]
+             */
+            $.ui.customClickHandler = function(target, e) {
+                var href = target.hash.length > 0 ? target.hash : target.href;
+                if (href && config.toolHashs.indexOf(href) > -1) {
+                    if (!app.checkLocation()) {
+                        app.changeLocation();
+                    }
+                    else {
+                        $.ui.loadDiv(href, false, false, "slide");
+                    }
+                    return true; // 返回true告诉afui，我们自己已经处理了这个a的点击事件
+                };
             };
-        };
 
-    	
-    	// network disconnection.
-    	var onOffline = function () {
-            app.showNotice("网络不给力");
-        }
-        // network connnection.
-    	var onOnline = function () {
-            //$("#afui").popup("网络已连接");
-            ///alert("onOnline");
-            app.showNotice("网络已连接");
-    	}
-    	// device APIs are available
-	    var onDeviceReady = function () {
-	    	// Now safe to use device APIs
-	    	document.addEventListener('offline', onOffline, false);
-	    	document.addEventListener('online', onOnline, false);
-	    }
-
-    	jQuery(function ($) {
-    		// Wait for device API libraries to load
-    		document.addEventListener("deviceready", onDeviceReady, false);
-    		
     		app.initialize();
     	});
     </script>
@@ -121,7 +98,7 @@
         </nav>
 
         <section class="music-area">
-            <!--Music Player plugin-->
+            <!-- music player plugin here -->
         </section>
 
         <div id="content">
@@ -171,14 +148,7 @@
                         <br /><span>未设置</span>
                     </div>
                     <div class="citybox-bd">
-                        <div class="cityfilter-t">
-                            <input type="text" placeholder="查找城市">
-                        </div>
-                        <div class="cityfilter-c">
-                            <h4>巴 匹配到的城市</h4>
-                            <p>巴黎</p>
-                            <p>巴西</p>
-                        </div>
+                        <!-- location setting plugin here -->
                     </div>
                 </div>
             </div>

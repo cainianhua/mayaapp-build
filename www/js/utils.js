@@ -67,6 +67,19 @@ function Utils() {
 			}, 500);
 		}
 	};
+	/**
+	 * 把弧度值转成角度值
+	 * @param  {Number} s 需要转换的值
+	 * @return {[type]}   [description]
+	 */
+	this.toAngleString = function(s) {
+		var positiveValue = Math.abs(parseFloat(s)),
+            degree = parseInt(positiveValue),
+            minute = parseInt((positiveValue - degree) * 60),
+            second = Math.round(parseInt(((positiveValue - degree) * 60 - minute) * 60));
+
+        return degree + "°" + minute + "′" + second + """;
+	}
 }
 
 // 挂载到jQuery对象上
