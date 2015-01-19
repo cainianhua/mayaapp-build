@@ -31,19 +31,19 @@
     <script type="text/javascript" charset="utf-8" src="lib/appframework/af.plugins.min.js"></script>-->
     <script type="text/javascript">
     	var config = {
-            serviceUrl: "http://api.mayacn.net",
+            serviceUrl: "http://app.mayacn.net",
             // "日出日落查询"内容不需要
             toolHashs: ["#DLDY", "#CZBZ", "#QQTSYFF", "#SSHL", "#HBDH", "#RCRLSJ", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"],
         };
-
-        jQuery(function ($) {
-            $.ui.backButtonText = "返回";
+        $.ui.backButtonText = "返回";
+        $.ui.ready(function() {
             /**
              * 自定义a标签处理方法
              * @param  {[type]} target [description]
              * @param  {[type]} e      [description]
              * @return {[type]}        [description]
              */
+            /*
             $.ui.customClickHandler = function(target, e) {
                 var href = target.hash.length > 0 ? target.hash : target.href;
                 if (href && config.toolHashs.indexOf(href) > -1) {
@@ -55,8 +55,10 @@
                     }
                     return true; // 返回true告诉afui，我们自己已经处理了这个a的点击事件
                 };
-            };
+            };*/
+        });
 
+        jQuery(function ($) {
     		app.initialize();
     	});
     </script>
@@ -142,7 +144,7 @@
             <div id="JCXX" class="panel" data-title="机场信息" data-nav="toollist" data-load="app.showArticle2" data-unload="app.clearArticle"></div>
             <div id="CRJKTX" class="panel" data-title="出入卡填写" data-nav="toollist" data-load="app.showArticle2" data-unload="app.clearArticle"></div>
 
-            <div id="pageCity" data-title="切换城市" data-modal="true" class="panel" data-nav="toollist">
+            <div id="pageCity" data-title="切换城市" data-modal="true" data-load="app.resetLocationSelector" class="panel" data-nav="toollist">
                 <div id="citybox22">
                     <div class="citybox-hd">旅游目的地
                         <br /><span>未设置</span>

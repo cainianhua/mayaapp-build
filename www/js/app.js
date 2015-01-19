@@ -39,11 +39,11 @@ var app = {
         });
         // 隐藏splashscreen
         setTimeout(function() {
-            navigator.splashscreen.hide();
+            navigator.splashscreen && navigator.splashscreen.hide();
         }, 2000);
     },
     /**
-     * [initLocationSelector description]
+     * 初始化旅游地点选择器
      * @return {[type]} [description]
      */
     initLocationSelector: function() {
@@ -58,12 +58,28 @@ var app = {
                 if ($.ui.isSideMenuOn()) $.ui.toggleSideMenu(false);
                 // 重新加载当前页面内容
                 var href = location.hash;
-                if (href && config.locations.indexOf(href) > -1) {
-                    //app.showArticle2($(location.hash).get(0));
-                    $("a[href=" + location.hash + "]").trigger("click");
+                if (href && config.toolHashs.indexOf(href) > -1) {
+                    // 说明：可以触发a的click事件，
+                    // 但是$.ui.loadDiv方法不会触发panel的load事件
+                    //$("#main .navbtn a[href=" + href + "]").trigger("click");
+
+                    if (href == "#RCRLSJ") {
+                        that.calc_res();
+                    }
+                    else {
+                        app.showArticle2($(location.hash).get(0));
+                    }
                 };
             }
         });
+    },
+    /**
+     * 重置旅游地点选择器
+     * @return {[type]} [description]
+     */
+    resetLocationSelector: function() {
+        var that = this;
+        $("#citybox22 .citybox-bd").locationsetter("reset");
     },
     /**
      * 检测用户是否已经选择了地理位置
@@ -304,7 +320,7 @@ var app = {
      * @return {[type]} [description]
      */
     bindEvents: function() {
-        document.addEventListener("deviceready", onDeviceReady, false);
+        document.addEventListener("deviceready", this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //

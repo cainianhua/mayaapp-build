@@ -78,7 +78,7 @@ function Utils() {
             minute = parseInt((positiveValue - degree) * 60),
             second = Math.round(parseInt(((positiveValue - degree) * 60 - minute) * 60));
 
-        return degree + "°" + minute + "′" + second + """;
+        return degree + "°" + minute + "′" + second + "\"";
 	}
 }
 

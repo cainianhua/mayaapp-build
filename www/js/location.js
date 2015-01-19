@@ -55,6 +55,7 @@
 
         // Initialize:
         that.initialize();
+        that.reset();
     }
 
     LocationSetter.utils = utils;
@@ -69,7 +70,7 @@
 
     LocationSetter.prototype = {
         /**
-         * [initialize description]
+         * 创建LocationSetter控件，一般只执行一次
          * @return {[type]} [description]
          */
         initialize: function() {
@@ -78,13 +79,24 @@
                 container = that.el;
             
             // 创建搜索框以及搜索结果容器
-            container.html('<div class="search-box cityfilter-t"><input type="text" class="input-search" placeholder="查找城市" /></div>'
+            container.html('<div class="search-box cityfilter-t"><input type="text" class="input-search" placeholder="请输入搜索关键字" /></div>'
                           +'<div class="search-results cityfilter-c"></div>');
 
             that.searchTextBox = $(".input-search", container);
             that.searchResultContainer = $(".search-results", container);
 
             that.searchTextBox.on("keyup.locationsetter", function(e) { that.onKeyUp(e); });
+
+            //that.searchTextBox.trigger("keyup");
+        },
+        /**
+         * 初始化控件
+         * @return {[type]} [description]
+         */
+        reset: function() {
+            var that = this;
+
+            that.searchTextBox.val("");
 
             that.searchTextBox.trigger("keyup");
         },

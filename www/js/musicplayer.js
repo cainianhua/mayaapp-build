@@ -174,11 +174,20 @@
             that.play();
         },
         /**
+         * 是否可以播放
+         * @return {[type]} [description]
+         */
+        canPlay: function() {
+            return this.musics.length > 0;
+        },
+        /**
          * 开始播放
          * @return {[type]} [description]
          */
         play: function() {
             var that = this;
+
+            if (!that.canPlay()) return;
 
             that.audioElement.get(0).play();
             that.controlButton.addClass("z-play");
