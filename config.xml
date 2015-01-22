@@ -43,6 +43,8 @@
     <preference name="AutoHideSplashScreen"       value="false" />          <!-- ios: iOS默认会自动隐藏splashscreen，这里设置iOS不自动隐藏, 貌似不起作用 -->
 	
 	<!-- ++++++++++++++++ ICONs ++++++++++++++++++++ -->
+    <icon src="icon.png" />
+
 	<platform name="android">
 		<icon src="res/icon/android/icon-36-ldpi.png" density="ldpi" />
 		<icon src="res/icon/android/icon-48-mdpi.png" density="mdpi" />
