@@ -38,10 +38,55 @@ var app = {
             did: localStorage.Id,
             serviceUrl: config.serviceUrl + "/services/musics"
         });
-        // 隐藏splashscreen
+
+        console.log("intialize end.");
+    },
+    /**
+     * 注册app需要监听的事件
+     * @return {[type]} [description]
+     */
+    bindEvents: function() {
+        document.addEventListener("deviceready", this.onDeviceReady, false);
+    },
+    // deviceready Event Handler
+    //
+    // The scope of 'this' is the event. In order to call the 'receivedEvent'
+    // function, we must explicitly call 'app.receivedEvent(...);'
+    onDeviceReady: function() {
+        // Now safe to use device APIs
+        //
+        // fix a bug ios7 & ios8
+        app.fixStatusBarIssue();
+        // 点击返回按钮
+        document.addEventListener("backbutton", function() {
+
+            var hash = location.href || "#main";
+            alert(hash);
+            if(hash.indexOf("#main") > -1) {
+                navigator.app.exitApp();
+            }
+            else {
+                navigator.app.backHistory();
+            }
+        }, false);
+
         setTimeout(function() {
+            // 隐藏splashscreen
             navigator.splashscreen && navigator.splashscreen.hide();
-        }, 2000);
+            //
+            // toast会显示在最顶层，为了不在splashscreen上显示，
+            // 所以我们在splashscreen隐藏之后再绑定相应的事件。
+            // network disconnection.
+            document.addEventListener('offline', function() { 
+                //$.maya.utils.showNotice("网络不给力");
+                window.plugins.toast.showLongBottom('网络不给力');
+            }, false);
+            // network connnection.
+            document.addEventListener('online', function() { 
+                //$.maya.utils.showNotice("网络已连接");
+                window.plugins.toast.showLongBottom('网络已连接');
+            }, false);
+        }, 3000);
     },
     /**
      * 初始化旅游地点选择器
@@ -313,28 +358,6 @@ var app = {
         }
 
         $(".sunrise-result").html(ret);
-    },
-    /**
-     * 注册app需要监听的事件
-     * @return {[type]} [description]
-     */
-    bindEvents: function() {
-        document.addEventListener("deviceready", this.onDeviceReady, false);
-    },
-    // deviceready Event Handler
-    //
-    // The scope of 'this' is the event. In order to call the 'receivedEvent'
-    // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        // Now safe to use device APIs
-        // 
-        // fix a bug ios7 & ios8
-        app.fixStatusBarIssue();
-
-        // network disconnection.
-        document.addEventListener('offline', function() { $.maya.utils.showNotice("网络不给力"); }, false);
-        // network connnection.
-        document.addEventListener('online', function() { $.maya.utils.showNotice("网络已连接"); }, false);
     },
     /**
      * 解决ios7以上系统状态栏的问题
