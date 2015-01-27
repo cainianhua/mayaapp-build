@@ -41,7 +41,8 @@
     <preference name="SplashScreen"               value="screen"/>          <!-- android: 指定splashscreen文件名 -->
     <preference name="SplashScreenDelay"          value="500000" />         <!-- android: Android不会自动隐藏splashscreen，这里指定其显示时间，单位：毫秒(ms), 我们设定一个很长的时间，在app加载完成之后，通过代码再去隐藏-->
     <preference name="AutoHideSplashScreen"       value="false" />          <!-- ios: iOS默认会自动隐藏splashscreen，这里设置iOS不自动隐藏, 貌似不起作用 -->
-	
+	<preference name="BackupWebStorage"           value="false" />          <!-- ios: 不备份localStorage数据到iCloud -->
+
 	<!-- ++++++++++++++++ ICONs ++++++++++++++++++++ -->
     <icon src="icon.png" />
 
