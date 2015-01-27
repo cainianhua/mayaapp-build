@@ -609,6 +609,15 @@ opacity: 1;}*/
     }
 }
 
+/****+ Custom +****/
+body.fix-statusbar {
+    background-color: #00ABE3;
+}
+
+.fix-statusbar #afui {
+    top: 20px;
+}
+
 /*小屏幕版*/
 @media (max-width: 320px) {
     .datepicker .dow, .datepicker .days div {

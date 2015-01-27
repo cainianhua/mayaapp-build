@@ -135,13 +135,12 @@
             };
 
             that.currAjaxRequest = $.ajax(ajaxSettings).done(function(musics) {
-                console.log("music's count: " + musics.length);
                 that.musics = musics;
                 callback(null, musics);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 callback({
                     code: -1,
-                    message: "网络连接不可用"
+                    message: "不能从服务器获取数据"
                 });
             }).always(function() {
                 that.currAjaxRequest = null;
@@ -153,7 +152,7 @@
          * @return {[type]}           [description]
          */
         switchTo: function(currIndex) {
-            console.log("music play index: " + currIndex);
+            //console.log("music play index: " + currIndex);
 
             var that = this,
                 musics = that.musics;

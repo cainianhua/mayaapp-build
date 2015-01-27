@@ -59,7 +59,6 @@ function Utils() {
 		else {
 			// 监听doingTransition的状态
 			var transitionInterval = setInterval(function() {
-				console.log("doingTransition: " + $.ui.doingTransition);
 				if ($.ui.doingTransition == false) {
 					clearInterval(transitionInterval);
 					callback();

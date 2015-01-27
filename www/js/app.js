@@ -9,10 +9,10 @@ var app = {
      */
     initialize: function() {
         var that = this;
-        // 初始化旅游地点选择控件
-        that.initLocationSelector();
         // 注册app监听事件
         that.bindEvents();
+        // 初始化旅游地点选择控件
+        that.initLocationSelector();
         // 初始化旅游地点信息
         that.initLocation(true);
         // 初始化panel的内容为正在加载...
@@ -22,14 +22,15 @@ var app = {
             that.initLoading($(idStr));
         });
         // 初始化日期选择控件
-        $('#date-input').val($.maya.utils.formatDate(new Date()))
-            .on("change", function(e) {
-                that.calc_res();
-            })
-            .datepicker({
-                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                shortDayNames: ["日", "一", "二", "三", "四", "五", "六"]
-            });
+        $('#date-input')
+        .val($.maya.utils.formatDate(new Date()))
+        .on("change", function(e) {
+            that.calc_res();
+        })
+        .datepicker({
+            monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+            shortDayNames: ["日", "一", "二", "三", "四", "五", "六"]
+        });
         // 初始化日出日落时间
         that.calc_res();
         // 初始化音乐播放控件
@@ -162,8 +163,6 @@ var app = {
      * @return {[type]}       [description]
      */
     showArticle2: function(panel) {
-        console.log("Call showArticle2");
-
         var el = $(panel);
         var that = this;
 
@@ -171,8 +170,6 @@ var app = {
             that.changeLocation();
             return;
         }
-
-        console.log("doingTransition: " + $.ui.doingTransition);
 
         // afui动画完成之后执行回调方法
         // 这样可以避免页面多个效果重叠导致卡顿的问题
@@ -202,10 +199,8 @@ var app = {
 
                 $.ui.updatePanel(idStr, htmlContent);
                 that.initLocation();
-
-                console.log("Loaded article.");
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                $.maya.utils.showNotice("网络不给力");
+                $.maya.utils.showNotice("不能从服务器获取数据");
             }).always(function() {
                 that.currAjaxRequest = null;
             });
@@ -217,8 +212,6 @@ var app = {
      * @return {[type]}       [description]
      */
     clearArticle: function(panel) {
-        console.log("Call clearArticle");
-
         this.initLoading(panel);
     },
     /**
@@ -269,11 +262,10 @@ var app = {
             message: "确定要清楚所有缓存吗？",
             cancelText: "取消",
             cancelCallback: function() {
-                console.log("cancelled");
+                //console.log("cancelled");
             },
             doneText: "确定",
             doneCallback: function() {
-                console.log("Done for!");
                 $.ui.toggleSideMenu();
                 app.clearLocation();
                 app.changeLocation();
@@ -335,13 +327,24 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         // Now safe to use device APIs
+        // 
+        // fix a bug ios7 & ios8
+        app.fixStatusBarIssue();
+
         // network disconnection.
-        document.addEventListener('offline', function() {
-            $.maya.utils.showNotice("网络不给力");
-        }, false);
+        document.addEventListener('offline', function() { $.maya.utils.showNotice("网络不给力"); }, false);
         // network connnection.
-        document.addEventListener('online', function() {
-            $.maya.utils.showNotice("网络已连接");
-        }, false);
+        document.addEventListener('online', function() { $.maya.utils.showNotice("网络已连接"); }, false);
+    },
+    /**
+     * 解决ios7以上系统状态栏的问题
+     * @return {[type]} [description]
+     */
+    fixStatusBarIssue: function() {
+        if (window.device && window.device.platform === "iOS" && window.device.version.substr(0, 1) >= 7) {
+            $("body").addClass("fix-statusbar");
+            var viewContainer = $("#afui");
+            viewContainer.height(viewContainer.height() - 20);
+        };
     }
 }
