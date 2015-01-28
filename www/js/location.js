@@ -189,6 +189,7 @@
                     that.processResponse(ajaxResponse, searchWord, cacheKey);
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown);
+                    that.searchResultContainer.html('<p class="tips">请求数据异常</p>');
                 }).always(function() {
                     that.currentAjaxRequest = null;
                 });

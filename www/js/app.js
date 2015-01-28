@@ -57,16 +57,24 @@ var app = {
         //
         // fix a bug ios7 & ios8
         app.fixStatusBarIssue();
+
+        var exitTime = 0;
         // 点击返回按钮
         document.addEventListener("backbutton", function() {
-
-            var hash = location.href || "#main";
-            alert(hash);
+            var hash = location.hash || "#main";
+            //alert(hash);
             if(hash.indexOf("#main") > -1) {
-                navigator.app.exitApp();
+                // 实现按两次返回键退出程序
+                if ((new Date()).valueOf() - exitTime > 2000) {
+                    $.maya.utils.showNotice("再按一次退出程序");
+                    exitTime = (new Date()).valueOf();
+                } else {
+                    navigator.app.exitApp();
+                }
             }
             else {
-                navigator.app.backHistory();
+                //navigator.app.backHistory();
+                $.ui.goBack();
             }
         }, false);
 
@@ -79,12 +87,10 @@ var app = {
             // network disconnection.
             document.addEventListener('offline', function() { 
                 //$.maya.utils.showNotice("网络不给力");
-                window.plugins.toast.showLongBottom('网络不给力');
             }, false);
             // network connnection.
             document.addEventListener('online', function() { 
                 //$.maya.utils.showNotice("网络已连接");
-                window.plugins.toast.showLongBottom('网络已连接');
             }, false);
         }, 3000);
     },
@@ -102,20 +108,28 @@ var app = {
                 $.ui.hideModal();
                 // 关闭侧边栏
                 if ($.ui.isSideMenuOn()) $.ui.toggleSideMenu(false);
-                // 重新加载当前页面内容
-                var href = location.hash;
-                if (href && config.toolHashs.indexOf(href) > -1) {
-                    // 说明：可以触发a的click事件，
-                    // 但是$.ui.loadDiv方法不会触发panel的load事件
-                    //$("#main .navbtn a[href=" + href + "]").trigger("click");
-                    if (href != "#RCRLSJ") {
-                        app.showArticle2($(location.hash).get(0));
-                    }
-                };
+                // 重新加载当前页面
+                that.reloadPage();
                 // 日出日落时间每次都必须重新计算
                 that.calc_res();
             }
         });
+    },
+    /**
+     * 重新加载当前页面
+     * @return {[type]} [description]
+     */
+    reloadPage: function() {
+        // 重新加载当前页面内容
+        var hash = location.hash;
+        if (hash && config.toolHashs.indexOf(hash) > -1) {
+            // 说明：可以触发a的click事件，
+            // 但是$.ui.loadDiv方法不会触发panel的load事件
+            //$("#main .navbtn a[href=" + href + "]").trigger("click");
+            if (hash.toUpperCase() != "#RCRLSJ") {
+                app.showArticle2($(hash).get(0));
+            }
+        };
     },
     /**
      * 重置旅游地点选择器
@@ -245,7 +259,8 @@ var app = {
                 $.ui.updatePanel(idStr, htmlContent);
                 that.initLocation();
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                $.maya.utils.showNotice("不能从服务器获取数据");
+                that.initExceptionContent(panel);
+                $.maya.utils.showNotice("网络不给力");
             }).always(function() {
                 that.currAjaxRequest = null;
             });
@@ -265,8 +280,25 @@ var app = {
      * @return {[type]}       [description]
      */
     initLoading: function(panel) {
-        var htmlContent = '<div class="loading-bd">' + '    <span class="loading-icon spin"></span>' + '</div>';
+        var htmlContent = '<div class="article-masker">' 
+                        + '    <span class="loading-icon spin"></span>' 
+                        + '</div>';
         $.ui.updatePanel($(panel).prop("id"), htmlContent);
+    },
+    /**
+     * 显示网络异常
+     * @return {[type]} [description]
+     */
+    initExceptionContent: function(panel) {
+        var that = this;
+        var htmlContent = '<div class="article-masker">' 
+                        + '    <span class="reload">点击重新加载</span>' 
+                        + '</div>';
+        $.ui.updatePanel($(panel).prop("id"), htmlContent);
+
+        $(".article-masker span.reload").on("click", function(e) {
+            that.reloadPage();
+        });
     },
     /**
      * 转换经度表示方式

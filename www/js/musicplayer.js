@@ -140,7 +140,7 @@
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 callback({
                     code: -1,
-                    message: "不能从服务器获取数据"
+                    message: "请求旅行音乐数据异常"
                 });
             }).always(function() {
                 that.currAjaxRequest = null;
