@@ -232,7 +232,7 @@
                 // jq.appframework.js has a bug
                 // we can't get correct this object.
                 //var self = $(this);
-                var self = $(e.target);
+                var self = $(e.currentTarget);
                 that.onSelect(self.data("index"));
             });
         },

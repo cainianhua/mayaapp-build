@@ -111,5 +111,7 @@
 		<!--<splash src="res/screen/ios/Default-Landscape-736h.png" width="2208" height="1242"/>-->
 	</platform>
 	
-    <access origin="*" />
+    <access origin="http://*.mayacn.net" />
+    <access origin="http://*.baidu.com" />
+    <access origin="http://*" launch-external="yes" />
 </widget>

@@ -11,7 +11,7 @@ var config = {
     analytics: "UA-19286809-1",
     // Api
     // 
-    serviceUrl: "http://app.mayacn.net",
+    serviceUrl: "http://app.mayacn.net/travelassistant",
     // "日出日落查询"内容不需要
     // 
     toolHashs: ["#DLDY", "#CZBZ", "#QQTSYFF", "#SSHL", "#HBDH", "#RCRLSJ", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"]

@@ -9,6 +9,10 @@
                 "parents": {
                     "/*": [
                         {
+                            "xml": "<feature name=\"Toast\"><param name=\"android-package\" value=\"nl.xservices.plugins.Toast\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Device\"><param name=\"android-package\" value=\"org.apache.cordova.device.Device\" /></feature>",
                             "count": 1
                         },
@@ -22,10 +26,6 @@
                         },
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"android-package\" value=\"org.apache.cordova.splashscreen.SplashScreen\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"Toast\"><param name=\"android-package\" value=\"nl.xservices.plugins.Toast\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -44,6 +44,9 @@
         }
     },
     "installed_plugins": {
+        "nl.x-services.plugins.toast": {
+            "PACKAGE_NAME": "com.maya.assistant"
+        },
         "org.apache.cordova.console": {
             "PACKAGE_NAME": "com.maya.assistant"
         },
@@ -57,9 +60,6 @@
             "PACKAGE_NAME": "com.maya.assistant"
         },
         "org.apache.cordova.splashscreen": {
-            "PACKAGE_NAME": "com.maya.assistant"
-        },
-        "nl.x-services.plugins.toast": {
             "PACKAGE_NAME": "com.maya.assistant"
         }
     },

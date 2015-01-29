@@ -78,6 +78,17 @@ var app = {
             }
         }, false);
 
+        // 转为后台应用，停止音乐播放
+        document.addEventListener("pause", function() {
+            $(".music-area").musicplayer("pause");
+        }, false);
+
+        /*
+        // 应用恢复为前台进程，播放音乐
+        document.addEventListener("resume", function() {
+            $(".music-area").musicplayer("play");
+        }, false);*/
+
         setTimeout(function() {
             // 隐藏splashscreen
             navigator.splashscreen && navigator.splashscreen.hide();
@@ -257,6 +268,7 @@ var app = {
                 };
 
                 $.ui.updatePanel(idStr, htmlContent);
+
                 that.initLocation();
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 that.initExceptionContent(panel);

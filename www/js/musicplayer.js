@@ -110,7 +110,31 @@
                 });
 
                 that.switchTo(0);
+                that.pause();
             });
+
+            /*
+            // 以下功能有问题，暂时换一种方式实现。
+            // 页面不可见之后停止播放
+            var visibilityChange;
+            if (typeof document.hidden !== "undefined") {
+                visibilityChange = "visibilitychange";
+            } else if (typeof document.mozHidden !== "undefined") {
+                visibilityChange = "mozvisibilitychange";
+            } else if (typeof document.msHidden !== "undefined") {
+                visibilityChange = "msvisibilitychange";
+            } else if (typeof document.webkitHidden !== "undefined") {
+                visibilityChange = "webkitvisibilitychange";
+            }
+
+            $.maya.utils.showNotice("visibilityChange: " + visibilityChange);
+            // 手机实验不能触发此事件
+            document.addEventListener(visibilityChange, function() {
+                console.log("visibilityChange");
+                $.maya.utils.showNotice("visibility changed");
+                that.pause();
+            }, false);
+            */
         },
         /**
          * 异步获取指定地点的音乐设置信息
