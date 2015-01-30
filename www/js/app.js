@@ -69,6 +69,8 @@ var app = {
                     $.maya.utils.showNotice("再按一次退出程序");
                     exitTime = (new Date()).valueOf();
                 } else {
+                    // 停止音乐播放
+                    $(".music-area").musicplayer("pause");
                     navigator.app.exitApp();
                 }
             }
@@ -77,13 +79,13 @@ var app = {
                 $.ui.goBack();
             }
         }, false);
-
+        
+        /*
         // 转为后台应用，停止音乐播放
         document.addEventListener("pause", function() {
             $(".music-area").musicplayer("pause");
         }, false);
-
-        /*
+        
         // 应用恢复为前台进程，播放音乐
         document.addEventListener("resume", function() {
             $(".music-area").musicplayer("play");
