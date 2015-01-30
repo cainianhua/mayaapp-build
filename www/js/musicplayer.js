@@ -104,37 +104,31 @@
                     $.maya.utils.showNotice(error.message);
                     return;
                 };
-
+                // 当前播放列表已经播放完毕（控件每次播放列表只有一首音乐）
                 that.audioElement.on("ended", function() {
+                    console.log("ended invoke.");
                     that.switchTo(++that.currMusicIndex);
+                });
+                // 音频开始播放
+                that.audioElement.on("play", function() {
+                    console.log("play invoke.");
+                    that.play();
+                });
+                // 音频暂停播放
+                that.audioElement.on("pause", function() {
+                    console.log("pause invoke.");
+                    that.pause();
+                });
+                // 当音频在因缓冲而暂停或停止后已就绪时触发。
+                that.audioElement.on("playing", function() {
+                    console.log("playing invoke.");
+                    //TODO: 考虑显示正在缓冲状态
+                    that.play();
                 });
 
                 that.switchTo(0);
                 that.pause();
             });
-
-            /*
-            // 以下功能有问题，暂时换一种方式实现。
-            // 页面不可见之后停止播放
-            var visibilityChange;
-            if (typeof document.hidden !== "undefined") {
-                visibilityChange = "visibilitychange";
-            } else if (typeof document.mozHidden !== "undefined") {
-                visibilityChange = "mozvisibilitychange";
-            } else if (typeof document.msHidden !== "undefined") {
-                visibilityChange = "msvisibilitychange";
-            } else if (typeof document.webkitHidden !== "undefined") {
-                visibilityChange = "webkitvisibilitychange";
-            }
-
-            $.maya.utils.showNotice("visibilityChange: " + visibilityChange);
-            // 手机实验不能触发此事件
-            document.addEventListener(visibilityChange, function() {
-                console.log("visibilityChange");
-                $.maya.utils.showNotice("visibility changed");
-                that.pause();
-            }, false);
-            */
         },
         /**
          * 异步获取指定地点的音乐设置信息
