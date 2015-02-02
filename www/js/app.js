@@ -236,7 +236,7 @@ var app = {
             localStorage.setItem("TimeZone", district.TimeZone || 8);
         }
         catch (errorThrown) {
-            $.ui.popup({
+            $.maya.utils.alert({
                 title: "警告",
                 message: "您的浏览器设置为无痕浏览，请退出无痕浏览模式再运行此应用。"
             });
@@ -364,20 +364,16 @@ var app = {
      * 清除浏览器localStorage缓存
      */
     clearCache: function() {
-        $.ui.popup({
+        $.maya.utils.confirm({
             title: "提醒",
-            message: "确定要清楚所有缓存吗？",
+            message: "确定要清空所有缓存吗？",
             cancelText: "取消",
-            cancelCallback: function() {
-                //console.log("cancelled");
-            },
             doneText: "确定",
             doneCallback: function() {
                 $.ui.toggleSideMenu();
                 app.clearLocation();
                 app.changeLocation();
-            },
-            cancelOnly: false
+            }
         });
     },
     /**

@@ -83,6 +83,75 @@ function Utils() {
             second = Math.round(parseInt(((positiveValue - degree) * 60 - minute) * 60));
 
         return degree + "°" + minute + "′" + second + "\"";
+	},
+	/**
+	 * [confirm description]
+	 * @param  {String} message         	Dialog message
+	 * @param  {Function} confirmCallback 	Callback to invoke with index of button pressed (1, 2, or 3) or when the dialog is dismissed without a button press (0).
+	 * @param  {String} title           	Dialog title. (String) (Optional, defaults to Confirm)
+	 * @param  {Array} buttonLabels    		Array of strings specifying button labels. (Optional, defaults to [OK,Cancel])
+	 * @return {[type]}                 	[description]
+	 */
+	/**
+	 * 显示Confirm消息
+	 * opts parameters:
+	 * @param  {String} message        	Dialog message
+	 * @param  {String} doneText       	[description]
+	 * @param  {Function} doneCallback  [description]
+	 * @param  {String} cancelText     	[description]
+	 * @param  {Function} cancelCallback [description]
+	 * @param  {[type]} title          	[description]
+	 */
+	this.confirm = function(opts) {
+		var message = opts.message || "",
+			doneText = opts.doneText || "OK",
+			doneCallback = opts.doneCallback || function() {},
+			cancelText = opts.cancelText || "Cancel",
+			cancelCallback = opts.cancelCallback || function() {},
+			title = opts.title || "Confirm";
+
+		if (navigator.notification) {
+			navigator.notification.confirm(message, function(index) {
+				index == 2 ? doneCallback() : cancelCallback();
+			}, title, [ cancelText, doneText ])
+		} else {
+			$.ui.popup({
+	            title: title,
+	            message: message,
+	            cancelText: cancelText,
+	            cancelCallback: cancelCallback,
+	            doneText: doneText,
+	            doneCallback: doneCallback,
+	            cancelOnly: false
+	        });
+		}
+	},
+	/**
+	 * 显示Alert消息
+	 * opts parameters:
+	 * @param  {[String]} message       	Dialog message.
+	 * @param  {[Function]} alertCallback 	Callback to invoke when alert dialog is dismissed
+	 * @param  {[String]} title         	Dialog title. (Optional, defaults to Alert)
+	 * @param  {[String]} buttonName    	Button name. (String) (Optional, defaults to OK)
+	 * @return {[type]}               		[description]
+	 */
+	this.alert = function(opts) {
+		var message = opts.message || "",
+			alertCallback = opts.alertCallback || function() {},
+			title = opts.title || "Alert",
+			buttonName = opts.buttonName || "OK";
+
+		if (navigator.notification) {
+			navigator.notification.alert(message, alertCallback, title, buttonName);
+		} else {
+			$.ui.popup({ 
+				title: title, 
+				message: message, 
+				cancelOnly: true, 
+				cancelText: buttonName, 
+				cancelCallback: alertCallback 
+			});
+		}
 	}
 }
 
