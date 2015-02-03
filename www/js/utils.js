@@ -219,7 +219,6 @@ function Network() {
 	 * @return {Boolean} [description]
 	 */
 	this.isCell = function() {
-		$.maya.utils.showNotice(navigator.connection.type);
 		return navigator.connection && (navigator.connection.type == Connection.CELL || navigator.connection.type == Connection.CELL_2G || navigator.connection.type == Connection.CELL_3G || navigator.connection.type == Connection.CELL_4G);
 	}
 }
