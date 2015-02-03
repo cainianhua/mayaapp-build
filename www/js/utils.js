@@ -152,9 +152,80 @@ function Utils() {
 				cancelCallback: alertCallback 
 			});
 		}
+	},
+	/**
+	 * [getAppData description]
+	 * @param  {[type]} key [description]
+	 * @return {[type]}     [description]
+	 */
+	this.getAppData = function(key) {
+		return localStorage.getItem(key);
+	}
+}
+
+/**
+ * 应用数据类，存储应用级别的数据，存储介质可能为Cookie或者localStorage
+ */
+function AppData() {
+	/**
+	 * 设置值，支持链式操作
+	 * @param {[type]} key   [description]
+	 * @param {[type]} value [description]
+	 */
+	this.setItem = function(key, value) {
+		localStorage.setItem(key, value);
+		return this;
+	},
+	/**
+	 * 获取值
+	 * @param  {[type]} key [description]
+	 * @return {[type]}     [description]
+	 */
+	this.getItem = function(key) {
+		return localStorage.getItem(key);
+	},
+	/**
+	 * 删除值，支持链式操作
+	 * @param  {[type]} key [description]
+	 * @return {[type]}     [description]
+	 */
+	this.remove = function(key) {
+		localStorage.removeItem(key);
+		return this;
+	}
+}
+
+/**
+ * 网络
+ */
+function Network() {
+	function checkConnection() {
+	    var networkState = navigator.connection.type;
+
+	    var states = {};
+	    states[Connection.UNKNOWN]  = 'Unknown connection';
+	    states[Connection.ETHERNET] = 'Ethernet connection';
+	    states[Connection.WIFI]     = 'WiFi connection';
+	    states[Connection.CELL_2G]  = 'Cell 2G connection';
+	    states[Connection.CELL_3G]  = 'Cell 3G connection';
+	    states[Connection.CELL_4G]  = 'Cell 4G connection';
+	    states[Connection.CELL]     = 'Cell generic connection';
+	    states[Connection.NONE]     = 'No network connection';
+
+	    console.log('Connection type: ' + states[networkState]);
+	}
+	/**
+	 * 是否正在使用移动网络
+	 * @return {Boolean} [description]
+	 */
+	this.isCell = function() {
+		$.maya.utils.showNotice(navigator.connection.type);
+		return navigator.connection && (navigator.connection.type == Connection.CELL || navigator.connection.type == Connection.CELL_2G || navigator.connection.type == Connection.CELL_3G || navigator.connection.type == Connection.CELL_4G);
 	}
 }
 
 // 挂载到jQuery对象上
 if (typeof $.maya === "undefined") $.maya = {};
 $.maya.utils = new Utils();
+$.maya.appData = new AppData();
+$.maya.network = new Network();

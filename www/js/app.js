@@ -110,7 +110,7 @@ var app = {
      */
     initMusicPlayer: function() {
         $(".music-area").musicplayer({
-            did: localStorage.Id,
+            did: $.maya.appData.getItem("Id"),
             serviceUrl: config.serviceUrl + "/services/musics"
         });
     },
@@ -119,7 +119,7 @@ var app = {
      * @return {[type]} [description]
      */
     resetMusicPlayer: function() {
-        $(".music-area").musicplayer("refresh", { did: localStorage.Id });
+        $(".music-area").musicplayer("refresh", { did: $.maya.appData.getItem("Id") });
     },
     /**
      * 初始化旅游地点选择器
@@ -133,14 +133,17 @@ var app = {
             onSelect: function(district) {
                 that.saveLocation(district);
                 $.ui.hideModal();
-                // 关闭侧边栏
-                if ($.ui.isSideMenuOn()) $.ui.toggleSideMenu(false);
-                // 重新加载当前页面
-                that.reloadPage();
-                // 日出日落时间每次都必须重新计算
-                that.calc_res();
-                // 重新初始化音乐播放器
-                that.resetMusicPlayer();
+
+                $.maya.utils.afterAfuiTransitionCompleted(function() {
+                    // 关闭侧边栏
+                    if ($.ui.isSideMenuOn()) $.ui.toggleSideMenu(false);
+                    // 重新加载当前页面
+                    that.reloadPage();
+                    // 日出日落时间每次都必须重新计算
+                    that.calc_res();
+                    // 重新初始化音乐播放器
+                    that.resetMusicPlayer();
+                });
             }
         });
     },
@@ -173,7 +176,7 @@ var app = {
      * @return {[type]} [description]
      */
     checkLocation: function() {
-        if (!localStorage.Id) {
+        if (!$.maya.appData.getItem("Id")) {
             return false;
         }
         return true;
@@ -186,9 +189,9 @@ var app = {
     initLocation: function(force) {
         var that = this;
 
-        var locName = localStorage.Name || "未设置";
-        var locLng = localStorage.Lng;
-        var locLat = localStorage.Lat;
+        var locName = $.maya.appData.getItem("Name") || "未设置";
+        var locLng = $.maya.appData.getItem("Lng");
+        var locLat = $.maya.appData.getItem("Lat");
 
         // 文章页顶部显示地点信息
         $(".headinfo p.infocont a").text(locName);
@@ -214,11 +217,11 @@ var app = {
      * @return {[type]} [description]
      */
     clearLocation: function() {
-        localStorage.removeItem("Id");
-        localStorage.removeItem("Name");
-        localStorage.removeItem("Lng");
-        localStorage.removeItem("Lat");
-        localStorage.removeItem("TimeZone");
+        $.maya.appData.removeItem("Id")
+                      .removeItem("Name")
+                      .removeItem("Lng")
+                      .removeItem("Lat")
+                      .removeItem("TimeZone");
 
         this.initLocation();
     },
@@ -229,11 +232,11 @@ var app = {
      */
     saveLocation: function(district) {
         try {
-            localStorage.setItem("Id", district.DistrictId);
-            localStorage.setItem("Name", district.Name);
-            localStorage.setItem("Lng", district.Lng);
-            localStorage.setItem("Lat", district.Lat);
-            localStorage.setItem("TimeZone", district.TimeZone || 8);
+            $.maya.appData.setItem("Id", district.DistrictId)
+                          .setItem("Name", district.Name)
+                          .setItem("Lng", district.Lng)
+                          .setItem("Lat", district.Lat)
+                          .setItem("TimeZone", district.TimeZone || 8);
         }
         catch (errorThrown) {
             $.maya.utils.alert({
@@ -267,7 +270,7 @@ var app = {
                 dataType: "html",
                 data: {
                     type: el.prop("id").toUpperCase(),
-                    did: localStorage.Id
+                    did: $.maya.appData.getItem("Id")
                 }
             }
 
@@ -396,9 +399,9 @@ var app = {
         var d = date.getDate(),
             m = date.getMonth() + 1,
             y = date.getFullYear(),
-            z = parseInt(localStorage.TimeZone),
-            lo = parseFloat(localStorage.Lng),
-            la = parseFloat(localStorage.Lat);
+            z = parseInt($.maya.appData.getItem("TimeZone")),
+            lo = parseFloat($.maya.appData.getItem("Lng")),
+            la = parseFloat($.maya.appData.getItem("Lat"));
 
         var ac = new AstroCalculator();
 
