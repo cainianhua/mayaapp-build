@@ -64,6 +64,7 @@
 
         that.musics = []; // 播放音乐列表
         that.currMusicIndex = 0;
+        that.firstClick = true; // 是否第一次点击播放
 
         that.initialize();
         that.refresh();
@@ -92,7 +93,22 @@
                 } else {
                     if (!that.canPlay()) {
                         $.maya.utils.showNotice("没有可以播放的音乐");
-                    } else {
+                        return;
+                    };
+
+                    // 检测用户使用的网络类型
+                    if (that.firstClick && $.maya.network.isCell()) {
+                        $.maya.utils.confirm({ 
+                            title: "流量提醒",
+                            message: "您正在使用流量播放旅行音乐，可能会产生高额费用，是否继续播放？",
+                            cancelText: "取消",
+                            doneText: "确定",
+                            doneCallback: function() { 
+                                that.firstClick = false;
+                                that.play(); 
+                            }
+                        });
+                    } else { 
                         that.play();
                     }
                 }
