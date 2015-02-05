@@ -109,7 +109,7 @@ function Utils() {
 			cancelText = opts.cancelText || "Cancel",
 			cancelCallback = opts.cancelCallback || function() {},
 			title = opts.title || "Confirm";
-
+		/*
 		if (navigator.notification) {
 			navigator.notification.confirm(message, function(index) {
 				index == 2 ? doneCallback() : cancelCallback();
@@ -124,7 +124,17 @@ function Utils() {
 	            doneCallback: doneCallback,
 	            cancelOnly: false
 	        });
-		}
+		}*/
+
+		$.ui.popup({
+            title: title,
+            message: message,
+            cancelText: cancelText,
+            cancelCallback: cancelCallback,
+            doneText: doneText,
+            doneCallback: doneCallback,
+            cancelOnly: false
+        });
 	},
 	/**
 	 * 显示Alert消息
@@ -189,7 +199,7 @@ function AppData() {
 	 * @param  {[type]} key [description]
 	 * @return {[type]}     [description]
 	 */
-	this.remove = function(key) {
+	this.removeItem = function(key) {
 		localStorage.removeItem(key);
 		return this;
 	}

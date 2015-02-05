@@ -110,16 +110,9 @@ var app = {
      */
     initMusicPlayer: function() {
         $(".music-area").musicplayer({
-            did: $.maya.appData.getItem("Id"),
+            did: $.maya.appData.getItem("Id") || 0,
             serviceUrl: config.serviceUrl + "/services/musics"
         });
-    },
-    /**
-     * 重置音乐播放器（更新音乐列表）
-     * @return {[type]} [description]
-     */
-    resetMusicPlayer: function() {
-        $(".music-area").musicplayer("refresh", { did: $.maya.appData.getItem("Id") });
     },
     /**
      * 初始化旅游地点选择器
@@ -142,7 +135,7 @@ var app = {
                     // 日出日落时间每次都必须重新计算
                     that.calc_res();
                     // 重新初始化音乐播放器
-                    that.resetMusicPlayer();
+                    that.initMusicPlayer();
                 });
             }
         });

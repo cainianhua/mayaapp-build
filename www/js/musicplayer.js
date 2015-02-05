@@ -63,11 +63,22 @@
         that.controlButton = null; // 点击可以控制播放或者暂停
 
         that.musics = []; // 播放音乐列表
-        that.currMusicIndex = 0;
+        that.currMusicIndex = -1;
         that.firstClick = true; // 是否第一次点击播放
 
-        that.initialize();
-        that.refresh();
+        // 必须在加载完音乐之后再初始化音乐控件
+        // 否则会出现点击播放之后，虽然已经显示开始播放，
+        // 但是实际无法播放，原因是因为音乐还没加载
+        that.getMusics(that.options.did, function(error, musics) {
+            if (error) {
+                $.maya.utils.showNotice(error.message);
+                return;
+            };
+
+            console.log("music's count: " + musics.length);
+
+            that.initialize();
+        });
     }
 
     MusicPlayer.prototype = {
@@ -85,8 +96,16 @@
                          + '</a>' 
                          + '<audio id="audio_host"></audio>');
 
-            that.audioElement = $("#audio_host", container);
             that.controlButton = $('.audio_btn', container);
+            that.audioElement = $("#audio_host", container);
+            // 初始化audio控件
+            // 
+            //// 取消循环播放
+            //that.audioElement.attr('loop', true);
+            // 取消自动播放
+            that.audioElement.attr('autoplay', false);
+            that.audioElement.attr('src', '');
+            // 事件绑定
             that.controlButton.on('click.musicplayer', function() {
                 if (that.isPlaying) {
                     that.pause();
@@ -96,8 +115,15 @@
                         return;
                     };
 
+                    //that.play();
+                    //return;
+
                     // 检测用户使用的网络类型
                     if (that.firstClick && $.maya.network.isCell()) {
+                        /*if(confirm("abc?")) {
+                            that.firstClick = false;
+                            that.play();
+                        }*/
                         $.maya.utils.confirm({ 
                             title: "流量提醒",
                             message: "您正在使用流量播放旅行音乐，可能会产生高额费用，是否继续播放？",
@@ -105,7 +131,7 @@
                             doneText: "确定",
                             doneCallback: function() { 
                                 that.firstClick = false;
-                                that.play(); 
+                                that.play();
                             }
                         });
                     } else { 
@@ -113,14 +139,6 @@
                     }
                 }
             });
-            // 初始化audio控件
-            // 
-            //// 取消循环播放
-            //that.audioElement.attr('loop', true);
-            // 取消自动播放
-            that.audioElement.attr('autoplay', false);
-            that.audioElement.attr('src', '');
-
             // 当前播放列表已经播放完毕（控件每次播放列表只有一首音乐）
             that.audioElement.on("ended", function() {
                 console.log("ended invoke.");
@@ -130,52 +148,39 @@
             });
             // 音频开始播放
             that.audioElement.on("play", function() {
+                $.maya.utils.showNotice("play");
                 console.log("play invoke.");
-                that.play();
+                //that.play();
+                that.playStatus();
+            });
+            that.audioElement.on("playing", function() {
+                $.maya.utils.showNotice("playing");
+                console.log("play invoke.");
+                //that.play();
+                that.playStatus();
             });
             // 音频暂停播放
             that.audioElement.on("pause", function() {
+                $.maya.utils.showNotice("pause");
                 console.log("pause invoke.");
-                that.pause();
+                //that.pause();
+                that.pauseStatus();
             });
-            // 当音频在因缓冲而暂停或停止后已就绪时触发。
-            that.audioElement.on("playing", function() {
-                console.log("playing invoke.");
-                //TODO: 考虑显示正在缓冲状态
+            // 在浏览器开始寻找指定视频/音频（audio/video）触发
+            that.audioElement.on("loadstart", function() {
+                $.maya.utils.showNotice("loadstart");
+                console.log("loadstart invoke.");
+            });
+            // 在用户可以开始播放视频/音频（audio/video）时触发。
+            that.audioElement.on("canplay", function() {
+                $.maya.utils.showNotice("canplay");
+                console.log("canplay invoke.");
                 that.play();
             });
-        },
-        /**
-         * 刷新音乐数据列表
-         * @return {[type]} [description]
-         */
-        refresh: function(opts) {
-            // 更新options
-            this.options = $.extend({}, this.options, opts);
-
-            var that = this,
-                districtId = that.options.did;
-
-            if (!districtId) return;
-
-            that.reset();
-
-            that.getMusics(districtId, function(error, musics) {
-                if (error) {
-                    $.maya.utils.showNotice(error.message);
-                    return;
-                };
-
-                console.log("music's count: " + musics.length);
-
-                /*// 音乐控件不显示，然后再显示，位置会有问题
-                if (musics.length == 0) {
-                    that.el.hide();
-                } else {
-                    that.el.show();
-                }*/
-
-                that.switchTo(0);
+            // 数据加载期间发生错误时触发。
+            that.audioElement.on("error", function() {
+                $.maya.utils.showNotice("error invoke");
+                console.log("error invoke.");
             });
         },
         /**
@@ -255,13 +260,13 @@
          */
         play: function() {
             var that = this;
-
             if (!that.canPlay()) return;
 
-            that.audioElement.get(0).play();
-            that.playStatus();
+            if (that.currMusicIndex === -1) {
+                that.switchTo(0);
+            };
 
-            that.isPlaying = true;
+            that.audioElement.get(0).play();
         },
         /**
          * 设置为播放的状态
@@ -269,18 +274,15 @@
          */
         playStatus: function() {
             this.controlButton.addClass("z-play");
+            this.isPlaying = true;
         },
         /**
          * 暂停播放
          * @return {[type]} [description]
          */
         pause: function() {
-            var that = this;
-
-            that.audioElement.get(0).pause();
-            that.pauseStatus();
-
-            that.isPlaying = false;
+            this.audioElement.get(0).pause();
+            //this.pauseStatus();
         },
         /**
          * 设置为暂停的状态
@@ -288,21 +290,18 @@
          */
         pauseStatus: function() {
             this.controlButton.removeClass("z-play");
+            this.isPlaying = false;
         },
         /**
          * 重置播放器
          * @return {[type]} [description]
          */
         reset: function() {
-            var that = this,
-                musicLink = "";
+            var that = this;
 
-            that.currMusicIndex = 0;
+            that.currMusicIndex = -1;
 
-            if (that.musics.length > 0) {
-                musicLink = that.musics[that.currMusicIndex].LinkTo;
-            };
-            that.audioElement.attr('src', musicLink);
+            that.audioElement.attr('src', "");
             that.pause();
         },
         /**
