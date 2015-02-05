@@ -64,7 +64,7 @@
 
         that.musics = []; // 播放音乐列表
         that.currMusicIndex = -1;
-        that.firstClick = true; // 是否第一次点击播放
+        that.firstPlay = true; // 是否第一次点击播放
 
         // 必须在加载完音乐之后再初始化音乐控件
         // 否则会出现点击播放之后，虽然已经显示开始播放，
@@ -116,25 +116,24 @@
                         return;
                     };
 
+                    // 手机系统要求必须用户手动点击audio播放音乐，程序支持播放会被浏览器阻止
+                    // dialogs插件的confirm方法会改变当前的event值，从而导致浏览器认为当前的
+                    // 播放操作不是用户点击的，因此会被阻止。
+                    // 我们在这里先初始化，然后就可以通过程序控制播放器的播放和暂停，
+                    // 从而绕过了浏览器的默认行为
+                    that.play();
+                    that.reset();
+                    
                     // 检测用户使用的网络类型
-                    if (that.firstClick && $.maya.network.isCell()) {
-                        /*
-                        // 推测：
-                        // dialog插件会改变当前的event，
-                        // 导致浏览器认为当前的播放操作不是用户点击的，从而不改变audio控件的播放状态
-                        // 验证：需要验证第三方插件是否都存在这个问题，从而引以为鉴？
+                    if (that.firstPlay && $.maya.network.isCell()) {
                         $.maya.utils.confirm({ 
                             title: "流量提醒",
                             message: "您正在使用流量播放旅行音乐，可能会产生高额费用，是否继续播放？",
                             doneCallback: function() { 
-                                that.firstClick = false;
+                                that.firstPlay = false;
                                 that.play();
                             }
-                        });*/
-                        if(confirm("您正在使用流量播放旅行音乐，可能会产生高额费用，是否继续播放？")) {
-                            that.firstClick = false;
-                            that.play();
-                        }
+                        });
                     } else { 
                         that.play();
                     }
@@ -149,29 +148,16 @@
             });
             // 音频开始播放
             that.audioElement.on("play", function() {
-                $.maya.utils.showNotice("play invoke");
                 console.log("play invoke.");
                 //that.play();
                 that.playStatus();
             });
             // 音频暂停播放
             that.audioElement.on("pause", function() {
-                $.maya.utils.showNotice("pause invoke");
                 console.log("pause invoke.");
                 //that.pause();
                 that.pauseStatus();
             });
-            // 在浏览器开始寻找指定视频/音频（audio/video）触发
-            that.audioElement.on("loadstart", function() {
-                $.maya.utils.showNotice("loadstart invoke");
-                console.log("loadstart invoke.");
-            });
-            // 在用户可以开始播放视频/音频（audio/video）时触发。
-            that.audioElement.on("canplay", function() {
-                $.maya.utils.showNotice("canplay invoke");
-                console.log("canplay invoke.");
-            });
-
         },
         /**
          * 异步获取指定地点的音乐设置信息

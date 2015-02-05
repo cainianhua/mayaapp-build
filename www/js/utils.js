@@ -35,7 +35,7 @@ function Utils() {
         return date <= _maxDate && date >= _minDate;
     };
     /**
-     * 显示通知，3秒之后自动隐藏
+     * 显示通知，并且自动隐藏
      * @param  {[type]} content [description]
      * @return {[type]}         [description]
      */
@@ -44,16 +44,11 @@ function Utils() {
             window.plugins.toast.showLongCenter(content);
         }
         else {
-            var _notice = $("#afui").notice({ 
-                message: content, 
-                onShow: function() {
-                    setTimeout(function() { _notice.hide(); }, 3000);
-                }
-            });
+            $("#afui").notice(content);
         }
     };
     /**
-     * AfUI的动画效果完成之后，执行指定的方法
+     * afui的动画效果完成之后，执行指定的方法
      * @param  {Function} callback 回调方法
      * @return {[type]}            [description]
      */
@@ -90,19 +85,19 @@ function Utils() {
      * 从而导致部分问题（比如：audio调用了play也不能会播放）
      * opts parameters:
      * @param  {String} message             Dialog message
-     * @param  {String} doneText            confirm button text
-     * @param  {Function} doneCallback      confirm button callback.
-     * @param  {String} cancelText          cancel button text
-     * @param  {Function} cancelCallback    cancel button callback function
-     * @param  {[type]} title               confirm window title.
+     * @param  {String} doneText            (optional)confirm button text
+     * @param  {Function} doneCallback      (optional)confirm button callback.
+     * @param  {String} cancelText          (optional)cancel button text
+     * @param  {Function} cancelCallback    (optional)cancel button callback function
+     * @param  {[type]} title               (optional)confirm window title.
      */
     this.confirm = function(opts) {
         var message = opts.message || "",
-            doneText = opts.doneText || "OK",
+            doneText = opts.doneText || "确定",
             doneCallback = opts.doneCallback || function() {},
-            cancelText = opts.cancelText || "Cancel",
+            cancelText = opts.cancelText || "取消",
             cancelCallback = opts.cancelCallback || function() {},
-            title = opts.title || "Confirm";
+            title = opts.title || "确认";
 
         if (navigator.notification) {
             navigator.notification.confirm(message, function(index) {
@@ -124,16 +119,16 @@ function Utils() {
      * 显示Alert消息
      * opts parameters:
      * @param  {[String]} message           Dialog message.
-     * @param  {[Function]} alertCallback     Callback to invoke when alert dialog is dismissed
-     * @param  {[String]} title             Dialog title. (Optional, defaults to Alert)
-     * @param  {[String]} buttonName        Button name. (String) (Optional, defaults to OK)
-     * @return {[type]}                       [description]
+     * @param  {[Function]} alertCallback   (optional)Callback to invoke when alert dialog is dismissed
+     * @param  {[String]} title             (optional)Dialog title.
+     * @param  {[String]} buttonName        (optional)Button name.
+     * @return {[type]}                     [description]
      */
     this.alert = function(opts) {
         var message = opts.message || "",
             alertCallback = opts.alertCallback || function() {},
-            title = opts.title || "Alert",
-            buttonName = opts.buttonName || "OK";
+            title = opts.title || "警告",
+            buttonName = opts.buttonName || "知道了";
 
         if (navigator.notification) {
             navigator.notification.alert(message, alertCallback, title, buttonName);
