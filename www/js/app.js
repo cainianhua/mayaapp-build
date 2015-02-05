@@ -339,7 +339,7 @@ var app = {
      */
     checkLocation: function(forceToSelect) {
         if (!$.maya.appData.getItem("Id")) {
-            if (forceToSelect) that.changeLocation();
+            if (forceToSelect) this.changeLocation();
             return false;
         }
         return true;

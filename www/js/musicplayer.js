@@ -97,14 +97,15 @@
                          + '<audio class="audio_control"></audio>');
 
             that.controlButton = $('.audio_btn', container);
-            that.audioElement = $(".audio_control", container);
+            that.audioElement = $(".audio_control", container)[0];
             // 初始化audio控件
             // 
             //// 取消循环播放
-            //that.audioElement.attr('loop', true);
+            //that.audioElement.loop = true;
             // 取消自动播放
-            that.audioElement.attr('autoplay', false);
-            that.audioElement.attr('src', '');
+            that.audioElement.autoplay = false;
+            that.audioElement.preload = false;
+            that.audioElement.src = "";
             // 事件绑定
             that.controlButton.on('click.musicplayer', function() {
                 if (that.isPlaying) {
@@ -122,7 +123,7 @@
                     // 我们在这里先初始化，然后就可以通过程序控制播放器的播放和暂停，
                     // 从而绕过了浏览器的默认行为
                     that.play();
-                    that.reset();
+                    that.pause();
                     
                     // 检测用户使用的网络类型
                     if (that.firstPlay && $.maya.network.isCell()) {
@@ -140,24 +141,73 @@
                 }
             });
             // 当前播放列表已经播放完毕（控件每次播放列表只有一首音乐）
-            that.audioElement.on("ended", function() {
+            that.audioElement.addEventListener("ended", function() {
                 console.log("ended invoke.");
                 if (that.switchTo(++that.currMusicIndex)) {
                     that.play();
                 }
-            });
+            }, false);
             // 音频开始播放
-            that.audioElement.on("play", function() {
+            that.audioElement.addEventListener("play", function() {
                 console.log("play invoke.");
                 //that.play();
                 that.playStatus();
-            });
+            }, false);
             // 音频暂停播放
-            that.audioElement.on("pause", function() {
+            that.audioElement.addEventListener("pause", function() {
                 console.log("pause invoke.");
                 //that.pause();
                 that.pauseStatus();
-            });
+            }, false);
+            // 
+            that.audioElement.addEventListener("canplaythrough", function() {
+                $.maya.utils.showNotice("canplaythrough invoke");
+                //that.playStatus();
+            }, false);
+            // 
+            that.audioElement.addEventListener("stalled", function() {
+                $.maya.utils.showNotice("stalled invoke");
+                //that.playStatus();
+            }, false);
+            // 
+            that.audioElement.addEventListener("suspend", function() {
+                $.maya.utils.showNotice("suspend invoke");
+                //that.playStatus();
+            }, false);
+            that.audioElement.addEventListener("abort", function() {
+                $.maya.utils.showNotice("abort invoke");
+                //that.playStatus();
+            }, false);
+            that.audioElement.addEventListener("error", function() {
+                var me = this; // audio control本身
+                try {
+                    switch (me.error.code) {
+                        case 1:
+                            //alert('取回过程被用户中止');
+                            break;
+                        case 2:
+                            //alert('当下载时发生错误');
+                            break;
+                        case 3:
+                            //alert('当解码时发生错误');
+                            break;
+                        case 4:
+                            //alert('不支持音频/视频');
+                            //
+                            // 第一次currMusicIndex为-1的时候，src为空，也会触发此错误
+                            // 当src有值的时候还触发此错误，应该就是数据源有问题
+                            // 自动切换下一首
+                            if (that.currMusicIndex > -1) {
+                                if (that.switchTo(++that.currMusicIndex)) {
+                                    that.play();
+                                }
+                            };
+                            break;
+                        default:
+                            break;
+                    }
+                } catch(ex) {}
+            }, false);
         },
         /**
          * 异步获取指定地点的音乐设置信息
@@ -199,8 +249,6 @@
          * @return {bool}             是否切换成功，true表示切换成功，否则切换失败
          */
         switchTo: function(currIndex) {
-            //console.log("music play index: " + currIndex);
-
             var that = this,
                 musics = that.musics;
 
@@ -213,11 +261,11 @@
                 return false;
             }
 
-            console.log("playing index: " + currIndex);
+            console.log("music index: " + currIndex);
 
             that.currMusicIndex = currIndex;
 
-            that.audioElement.attr('src', musics[currIndex].LinkTo);
+            that.audioElement.src = musics[currIndex].LinkTo;
 
             //that.play();
 
@@ -242,7 +290,10 @@
                 that.switchTo(0);
             };
 
-            that.audioElement.get(0).play();
+            that.controlButton.addClass("z-play");
+            that.audioElement.play();
+
+            that.isPlaying = true;
         },
         /**
          * 设置为播放的状态
@@ -257,7 +308,7 @@
          * @return {[type]} [description]
          */
         pause: function() {
-            this.audioElement.get(0).pause();
+            this.audioElement.pause();
             //this.pauseStatus();
         },
         /**
@@ -274,11 +325,10 @@
          */
         reset: function() {
             var that = this;
+            that.pause();
 
             that.currMusicIndex = -1;
-
-            that.audioElement.attr('src', "");
-            that.pause();
+            that.audioElement.src = "";
         },
         /**
          * 释放对象
