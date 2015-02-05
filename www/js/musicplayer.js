@@ -91,13 +91,13 @@
                 container = that.el,
                 districtId = that.options.did;
 
-            container.html('<a href="javascript:void(0);" class="u-globalAudio audio_btn"  data-status="on">' 
+            container.html('<a href="javascript:void(0);" class="u-globalAudio audio_btn">' 
                          + '    <i class="icon-music"></i>' 
                          + '</a>' 
-                         + '<audio id="audio_host"></audio>');
+                         + '<audio class="audio_control"></audio>');
 
             that.controlButton = $('.audio_btn', container);
-            that.audioElement = $("#audio_host", container);
+            that.audioElement = $(".audio_control", container);
             // 初始化audio控件
             // 
             //// 取消循环播放
@@ -109,31 +109,32 @@
             that.controlButton.on('click.musicplayer', function() {
                 if (that.isPlaying) {
                     that.pause();
-                } else {
+                } 
+                else {
                     if (!that.canPlay()) {
                         $.maya.utils.showNotice("没有可以播放的音乐");
                         return;
                     };
 
-                    //that.play();
-                    //return;
-
                     // 检测用户使用的网络类型
                     if (that.firstClick && $.maya.network.isCell()) {
-                        /*if(confirm("abc?")) {
-                            that.firstClick = false;
-                            that.play();
-                        }*/
+                        /*
+                        // 推测：
+                        // dialog插件会改变当前的event，
+                        // 导致浏览器认为当前的播放操作不是用户点击的，从而不改变audio控件的播放状态
+                        // 验证：需要验证第三方插件是否都存在这个问题，从而引以为鉴？
                         $.maya.utils.confirm({ 
                             title: "流量提醒",
                             message: "您正在使用流量播放旅行音乐，可能会产生高额费用，是否继续播放？",
-                            cancelText: "取消",
-                            doneText: "确定",
                             doneCallback: function() { 
                                 that.firstClick = false;
                                 that.play();
                             }
-                        });
+                        });*/
+                        if(confirm("您正在使用流量播放旅行音乐，可能会产生高额费用，是否继续播放？")) {
+                            that.firstClick = false;
+                            that.play();
+                        }
                     } else { 
                         that.play();
                     }
@@ -148,40 +149,29 @@
             });
             // 音频开始播放
             that.audioElement.on("play", function() {
-                $.maya.utils.showNotice("play");
-                console.log("play invoke.");
-                //that.play();
-                that.playStatus();
-            });
-            that.audioElement.on("playing", function() {
-                $.maya.utils.showNotice("playing");
+                $.maya.utils.showNotice("play invoke");
                 console.log("play invoke.");
                 //that.play();
                 that.playStatus();
             });
             // 音频暂停播放
             that.audioElement.on("pause", function() {
-                $.maya.utils.showNotice("pause");
+                $.maya.utils.showNotice("pause invoke");
                 console.log("pause invoke.");
                 //that.pause();
                 that.pauseStatus();
             });
             // 在浏览器开始寻找指定视频/音频（audio/video）触发
             that.audioElement.on("loadstart", function() {
-                $.maya.utils.showNotice("loadstart");
+                $.maya.utils.showNotice("loadstart invoke");
                 console.log("loadstart invoke.");
             });
             // 在用户可以开始播放视频/音频（audio/video）时触发。
             that.audioElement.on("canplay", function() {
-                $.maya.utils.showNotice("canplay");
+                $.maya.utils.showNotice("canplay invoke");
                 console.log("canplay invoke.");
-                that.play();
             });
-            // 数据加载期间发生错误时触发。
-            that.audioElement.on("error", function() {
-                $.maya.utils.showNotice("error invoke");
-                console.log("error invoke.");
-            });
+
         },
         /**
          * 异步获取指定地点的音乐设置信息
