@@ -82,7 +82,7 @@
             // 取消数据预加载
             // 注意：preload设置为none至关重要，否则error的事件处理逻辑会导致导致死循环
             that.audioElement.preload = "none";
-
+            // 加载音乐文件
             that.loadSong();
             // 事件绑定
             that.controlButton.on('click.musicplayer', function() {
@@ -180,7 +180,7 @@
                         // 自动切换下一首
                         // 问题：
                         // 所有歌曲格式都不正确的时候，在这里调用pause方法可以触发pasue事件，
-                        // 但是nextSong方法里面调用pause方法就不会触发pause事件，什么原因？
+                        // 但是nextSong方法里面调用pause方法就不会触发pause事件，不知道什么原因？
                         /*if (that.currIndex == that.musics.length - 1) {
                             that.pause();
                             return;
@@ -276,6 +276,11 @@
             var that = this;
             if (!that.canPlay()) return;
 
+            // 必须设置为auto，否则第二首歌曲将不会自动播放（手机上）
+            if (that.audioElement.preload == "none") {
+                that.audioElement.preload = "auto";
+            };
+
             that.audioElement.play();
             that.playStatus();
         },
@@ -311,6 +316,9 @@
         reset: function() {
             var that = this;
             that.pause();
+
+            // 阻止预加载，否则会导致死循环
+            that.audioElement.preload = "none";
             that.currIndex = 0;
             that.loadSong();
         },
