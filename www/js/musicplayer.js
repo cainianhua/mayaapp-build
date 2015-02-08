@@ -180,34 +180,8 @@
                     case 4:
                         console.log("error：不支持音频/视频");
                         //alert('不支持音频/视频');
-                        //
-                        // 百度音乐链接过一段时间会失效，页面返回的数据是html或者json数据
-                        // 自动切换下一首
-                        // 问题：
-                        // 所有歌曲格式都不正确的时候，在这里调用pause方法可以触发pasue事件，
-                        // 但是nextSong方法里面调用pause方法就不会触发pause事件，不知道什么原因？
-                        /*if (that.currIndex == that.musics.length - 1) {
-                            that.pause();
-                            return;
-                        };*/
-                        /*
-                        var tryToPlayNext = function() {
-                            $.maya.utils.showNotice("<" + that.musics[that.currIndex].Name + ">无法播放，尝试播放下一首");
-                            setTimeout(function () {
-                                that.nextSong();
-                            }, 4000);
-                        }
-
-                        if (that.FirstLoadSongErrorIndex == -1) {
-                            that.FirstLoadSongErrorIndex = that.currIndex;
-
-                            tryToPlayNext();
-                        }
-                        else {
-                            if (that.FirstLoadSongErrorIndex < that.currIndex) {
-                                tryToPlayNext();
-                            };
-                        }*/
+                        $.maya.utils.showNotice("<" + that.musics[that.currIndex].Name + ">无法播放");
+                        break;
                     default:
                         console.log("error: 未知错误");
                         break;

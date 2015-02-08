@@ -150,7 +150,7 @@ var app = {
     showTips: function() {
         // show tips
         if (!$.maya.appData.getItem("ShowTips")) {
-            $.maya.utils.alert({ message: "您知道吗？单击右下角的音乐图标可以暂停或者播放旅行音乐，则双击可以切换音乐" });
+            $.maya.utils.alert({ message: "您知道吗？单击右下角的音乐图标可以暂停或者播放旅行音乐，双击则可以切换音乐" });
             $.maya.appData.setItem("ShowTips", true);
         };
     },
