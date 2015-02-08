@@ -127,7 +127,7 @@ function Utils() {
     this.alert = function(opts) {
         var message = opts.message || "",
             alertCallback = opts.alertCallback || function() {},
-            title = opts.title || "警告",
+            title = opts.title || "提示",
             buttonName = opts.buttonName || "知道了";
 
         if (navigator.notification) {

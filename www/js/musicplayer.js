@@ -37,6 +37,7 @@
         that.musics = [];           // 播放音乐列表
         that.currIndex = 0;         // 当前播放的音乐序号
         that.firstPlay = true;      // 是否第一次点击播放
+        that.FirstLoadSongErrorIndex = -1;   // 第一次歌曲加载出错（格式不支持）的序号
 
         // 必须在加载完音乐之后再初始化音乐控件
         // 否则会出现点击播放之后，虽然已经显示开始播放，
@@ -85,7 +86,7 @@
             // 加载音乐文件
             that.loadSong();
             // 事件绑定
-            that.controlButton.on('click.musicplayer', function() {
+            that.controlButton.on('singleTap.musicplayer', function() {
                 if (that.isPlaying) {
                     that.pause();
                 } 
@@ -117,6 +118,10 @@
                         that.play();
                     }
                 }
+            });
+            that.controlButton.on('doubleTap.musicplayer', function() {
+                that.pause();
+                that.nextSong();
             });
 
             that.bindEvents();
@@ -185,11 +190,24 @@
                             that.pause();
                             return;
                         };*/
-                        $.maya.utils.showNotice("<" + that.musics[that.currIndex].Name + ">无法播放，尝试播放下一首");
-                        setTimeout(function () {
-                            that.nextSong();
-                        }, 4000);
-                        break;
+                        /*
+                        var tryToPlayNext = function() {
+                            $.maya.utils.showNotice("<" + that.musics[that.currIndex].Name + ">无法播放，尝试播放下一首");
+                            setTimeout(function () {
+                                that.nextSong();
+                            }, 4000);
+                        }
+
+                        if (that.FirstLoadSongErrorIndex == -1) {
+                            that.FirstLoadSongErrorIndex = that.currIndex;
+
+                            tryToPlayNext();
+                        }
+                        else {
+                            if (that.FirstLoadSongErrorIndex < that.currIndex) {
+                                tryToPlayNext();
+                            };
+                        }*/
                     default:
                         console.log("error: 未知错误");
                         break;
@@ -260,6 +278,7 @@
             console.log("loading song index: " + that.currIndex);
 
             that.audioElement.src = that.musics[that.currIndex].LinkTo;
+            that.audioElement.load();
         },
         /**
          * 是否可以播放

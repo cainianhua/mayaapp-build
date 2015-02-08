@@ -38,6 +38,11 @@ var app = {
         });
 
         that.initialize();
+
+        if ($.maya.appData.getItem("showTips")) {
+            $.maya.utils.alert("您知道吗？单击右下角的音乐图标可以暂停或者播放旅行音乐，则双击可以切换音乐");
+            $.maya.appData.setItem("showTips", true);
+        };
     },
     /**
      * 应用初始化，可以多次调用
