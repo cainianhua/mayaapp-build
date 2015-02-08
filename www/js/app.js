@@ -38,11 +38,6 @@ var app = {
         });
 
         that.initialize();
-
-        if ($.maya.appData.getItem("showTips")) {
-            $.maya.utils.alert("您知道吗？单击右下角的音乐图标可以暂停或者播放旅行音乐，则双击可以切换音乐");
-            $.maya.appData.setItem("showTips", true);
-        };
     },
     /**
      * 应用初始化，可以多次调用
@@ -141,10 +136,23 @@ var app = {
                     // 重新加载当前页面
                     that.reloadPage();
                     // 重新初始化应用
-                    that.initialize()
+                    that.initialize();
+
+                    that.showTips();
                 });
             }
         });
+    },
+    /**
+     * 显示全局提示
+     * @return {[type]} [description]
+     */
+    showTips: function() {
+        // show tips
+        if (!$.maya.appData.getItem("ShowTips")) {
+            $.maya.utils.alert({ message: "您知道吗？单击右下角的音乐图标可以暂停或者播放旅行音乐，则双击可以切换音乐" });
+            $.maya.appData.setItem("ShowTips", true);
+        };
     },
     /**
      * 重置旅游地点选择器
@@ -384,7 +392,8 @@ var app = {
                       .removeItem("Name")
                       .removeItem("Lng")
                       .removeItem("Lat")
-                      .removeItem("TimeZone");
+                      .removeItem("TimeZone")
+                      .removeItem("ShowTips");
 
         this.showLocation();
     },
