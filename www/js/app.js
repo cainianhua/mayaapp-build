@@ -198,7 +198,8 @@ var app = {
                 dataType: "html",
                 data: {
                     type: el.prop("id").toUpperCase(),
-                    did: $.maya.appData.getItem("Id")
+                    did: $.maya.appData.getItem("Id"),
+                    width: $(window).width()
                 }
             }
 
