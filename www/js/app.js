@@ -80,8 +80,14 @@ var app = {
                     $.maya.utils.showNotice("再按一次退出程序");
                     app.exitTime = (new Date()).valueOf();
                 } else {
-                    // 停止音乐播放
-                    $(".music-area").musicplayer("pause");
+                    // 音乐播放控件只有在有音乐的时候才初始化
+                    // 因此会导致未初始化的时候调用pause方法会出错
+                    // 
+                    try {
+                        // 停止音乐播放
+                        $(".music-area").musicplayer("pause");
+                    }
+                    catch(errorThrown) {}
                     navigator.app.exitApp();
                 }
             }
@@ -90,17 +96,6 @@ var app = {
                 $.ui.goBack();
             }
         }, false);
-        
-        /*
-        // 转为后台应用，停止音乐播放
-        document.addEventListener("pause", function() {
-            $(".music-area").musicplayer("pause");
-        }, false);
-        
-        // 应用恢复为前台进程，播放音乐
-        document.addEventListener("resume", function() {
-            $(".music-area").musicplayer("play");
-        }, false);*/
 
         setTimeout(function() {
             // 隐藏splashscreen
