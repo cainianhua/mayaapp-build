@@ -229,7 +229,10 @@ var app = {
      * @return {[type]}       [description]
      */
     clearArticle: function(panel) {
-        this.initPanelLoading(panel);
+        var that = this;
+        $.maya.utils.afterAfuiTransitionCompleted(function() {
+            that.initPanelLoading(panel);
+        });
     },
     /**
      * 显示正在加载信息
