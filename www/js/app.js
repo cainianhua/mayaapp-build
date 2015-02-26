@@ -407,7 +407,7 @@ var app = {
                           .setItem("Name", district.Name)
                           .setItem("Lng", district.Lng)
                           .setItem("Lat", district.Lat)
-                          .setItem("TimeZone", district.TimeZone || 8);
+                          .setItem("TimeZone", district.TimeZone || 0);
         }
         catch (errorThrown) {
             $.maya.utils.alert({
