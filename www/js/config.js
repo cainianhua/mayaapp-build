@@ -14,5 +14,5 @@ var config = {
     serviceUrl: "http://app.mayacn.net/travelassistant",
     // "日出日落查询"内容不需要
     // 
-    toolHashs: ["#DLDY", "#CZBZ", "#QQTSYFF", "#SSHL", "#HBDH", "#RCRLSJ", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"]
+    toolHashs: ["#DLDY", "#CZBZ", "#QQTSYFF", /*"#SSHL", */"#HBDH", "#RCRLSJ", "#CPZT", "#DSGZL", "#DDJJDH", "#JCXX", "#CRJKTX"]
 };

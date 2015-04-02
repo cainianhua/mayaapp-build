@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -31,16 +31,15 @@
 
         <nav id="toollist">
             <ul class="list">
-             	<li class="divider">旅行工具</li>
+                <li class="divider">旅行工具</li>
                 <li><a href="#main" data-transition="slide">工具首页</a></li>
-	            <li><a href="#DLDY" data-transition="slide">电流电压</a></li>
+                <li><a href="#DLDY" data-transition="slide">当地电压</a></li>
                 <li><a href="#CZBZ" data-transition="slide">插座标准</a></li>
                 <li><a href="#QQTSYFF" data-transition="slide">全球通</a></li>
-                <li><a href="#SSHL" data-transition="slide">实时汇率</a></li>
                 <li><a href="#HBDH" data-transition="slide">货币换算</a></li>
                 <li><a href="#RCRLSJ" data-transition="slide">日出日落时间</a></li>
                 <li><a href="#CPZT" data-transition="slide">产品专题</a></li>
-                <li><a href="#DSGZL" data-transition="slide">大使馆资料</a></li>
+                <li><a href="#DSGZL" data-transition="slide">驻外使馆</a></li>
                 <li><a href="#DDJJDH" data-transition="slide">当地紧急电话</a></li>
                 <li><a href="#JCXX" data-transition="slide">机场信息</a></li>
                 <li><a href="#CRJKTX" data-transition="slide">出入境卡填写</a></li>
@@ -54,27 +53,25 @@
         
             <div id="main" data-title="全球旅行助手" class="panel" selected="true">
                 <div class="logo">
-                    <div class="logocity">旅行目的地：未设置</div>
+                    <div class="logocity">旅行目的地：<span>未设置</span></div>
                 </div>
                 <ul class="navbtn clearfix">
-                    <li><a href="#DLDY" data-transition="slide"><i class="icon-navbtn icon-navbtn01"></i><span>电流电压</span></a></li>
+                    <li><a href="#DLDY" data-transition="slide"><i class="icon-navbtn icon-navbtn01"></i><span>当地电压</span></a></li>
                     <li><a href="#CZBZ" data-transition="slide"><i class="icon-navbtn icon-navbtn02"></i><span>插座标准</span></a></li>
                     <li><a href="#QQTSYFF" data-transition="slide"><i class="icon-navbtn icon-navbtn03"></i><span>全球通</span></a></li>
-                    <li><a href="#SSHL" data-transition="slide"><i class="icon-navbtn icon-navbtn04"></i><span>实时汇率</span></a></li>
                     <li><a href="#HBDH" data-transition="slide"><i class="icon-navbtn icon-navbtn05"></i><span>货币换算</span></a></li>
                     <li><a href="#RCRLSJ" data-transition="slide"><i class="icon-navbtn icon-navbtn06"></i><span>日出日落时间</span></a></li>
                     <li><a href="#CPZT" data-transition="slide"><i class="icon-navbtn icon-navbtn07"></i><span>产品专题</span></a></li>
-                    <li><a href="#DSGZL" data-transition="slide"><i class="icon-navbtn icon-navbtn08"></i><span>大使馆资料</span></a></li>
+                    <li><a href="#DSGZL" data-transition="slide"><i class="icon-navbtn icon-navbtn08"></i><span>驻外使馆</span></a></li>
                     <li><a href="#DDJJDH" data-transition="slide"><i class="icon-navbtn icon-navbtn09"></i><span>当地紧急电话</span></a></li>
                     <li><a href="#JCXX" data-transition="slide"><i class="icon-navbtn icon-navbtn10"></i><span>机场信息</span></a></li>
                     <li><a href="#CRJKTX" data-transition="slide"><i class="icon-navbtn icon-navbtn11"></i><span>出入境卡填写</span></a></li>
                 </ul>
             </div>
             
-            <div id="DLDY" class="panel" data-title="电流电压" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
+            <div id="DLDY" class="panel" data-title="当地电压" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="CZBZ" class="panel" data-title="插座标准" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="QQTSYFF" class="panel" data-title="全球通使用方法" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
-            <div id="SSHL" class="panel" data-title="实时汇率" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="HBDH" class="panel" data-title="货币换算" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="RCRLSJ" data-title="日出日落时间" class="panel" data-nav="toollist">
             	<div class="headinfo"><p class="infotitle"><i class="icon-position"></i>您当前查询的目的地</p><p class="infocont"><a href="javascript:$.ui.showModal('#pageCity','slide');">广州市</a> <span>北纬23.567,东经113.456</span></p></div>
@@ -86,7 +83,7 @@
                 </div>
             </div>
             <div id="CPZT" class="panel" data-title="产品专题" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
-            <div id="DSGZL" class="panel" data-title="大使馆资料" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
+            <div id="DSGZL" class="panel" data-title="驻外使馆" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="DDJJDH" class="panel" data-title="当地紧急电话" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="JCXX" class="panel" data-title="机场信息" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>
             <div id="CRJKTX" class="panel" data-title="出入卡填写" data-nav="toollist" data-load="app.loadArticle" data-unload="app.clearArticle"></div>

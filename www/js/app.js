@@ -373,7 +373,7 @@ var app = {
         // 设置旅游城市页面显示地点信息
         $("#citybox22 .citybox-hd span").text(locName);
         // 首页顶部显示地点信息
-        $("#main .logocity").text("旅行目的地：" + locName);
+        $("#main .logocity span").text(locName);
     },
     /**
      * 修改地理位置信息
